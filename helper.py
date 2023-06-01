@@ -18,6 +18,16 @@ def queryPokemonByNameOrId(pokemon_name_id):
     #destructure the stats
     hp_data, atk_data, def_data, spatk_data, spdef_data, speed_data = data["stats"]
 
+    #destructure the types
+    type_1, *type_2 = data["types"]
+
+    #create list of just the actual desired value for simplicity
+    types = [type_1["type"]["name"]]
+
+    #conditional statement to test if type_2 even exists
+    if type_2:
+        types.append(type_2[0]["type"]["name"])
+
     #create pokemon instance
     queriedPokemon = Pokemon(
         dex_number = data["id"],
@@ -31,7 +41,7 @@ def queryPokemonByNameOrId(pokemon_name_id):
         spdef_stat = spdef_data["base_stat"],
         speed_stat = speed_data["base_stat"]
     )
-    #set Pokemon Types separately to take into account both a singular type and multiple.
+    #setTypes separately to take into cover both a singular type and multiple.
     queriedPokemon.setTypes(types)
 
     return queriedPokemon
