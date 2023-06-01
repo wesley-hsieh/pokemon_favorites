@@ -2,6 +2,7 @@
 
 from app import db
 from models import User, Pokemon, Favorite
+from helper import queryPokemonByNameOrId
 
 import requests
 
@@ -31,6 +32,15 @@ sabrina = User.register(
     pwd="password",
     email="ghostsaremyfriend@email.com"
 )
+
+geodude = queryPokemonByNameOrId("geodude")
+
+# pikachu = queryPokemonByNameOrId("pikachu")
+# blastoise = queryPokemonByNameOrId("blastoise")
+# venusaur = queryPokemonByNameOrId("venusaur")
+# charizard = queryPokemonByNameOrId("charizard")
+# espeon = queryPokemonByNameOrId("espeon")
+# snorlax = queryPokemonByNameOrId("snorlax")
 
 brock_fav = Favorite(
     user_id = 2,
