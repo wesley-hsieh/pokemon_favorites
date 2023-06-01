@@ -14,6 +14,8 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False)
 
+    favorites = db.relationship('Pokemon', secondary='favorites', backref='user')
+    teams = db.relationship('Team', secondary="teams_tables", backref="user")
 
     @classmethod
     def register(cls, username, pwd, email):
@@ -31,6 +33,42 @@ class User(db.Model):
             return u
         else:
             return False
+
+class Pokemon(db.Model):
+    __tablename__ = 'pokemon'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    dex_number = db.Column(db.Integer, nullable=False, unique=True)
+    name = db.Column(db.Text, nullable=False)
+    sprites = db.Column(db.Text)
+    shiny_sprites = db.Column(db.Text)
+    hp_stat = db.Column(db.Integer)
+    atk_stat = db.Column(db.Integer)
+    def_stat = db.Column(db.Integer)
+    spatk_stat = db.Column(db.Integer)
+    spdef_stat = db.Column(db.Integer)
+    speed_stat = db.Column(db.Integer)
+    type_1 = db.Column(db.Text, nullable=False)
+    type_2 = db.Column(db.Text)
+
+    def setTypes(self, types):
+        self.type_1 = types[0]
+
+        try:
+            self.type_2 = types[1]
+        except:
+            pass
+
+class Favorite(db.Model):
+    __tablename__ = "favorites"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pokemon_id = db.Column(db.Integer, db.ForeignKey('pokemon.id'))
+
+    user = db.relationship('User', backref="favorite")
+    pokemon = db.relationship('Pokemon', backref="favorite")
+
 def connect_db(app):
     """Connect to database."""
 
