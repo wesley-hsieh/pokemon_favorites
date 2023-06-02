@@ -1,0 +1,76 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar
+  password varchar
+}
+
+Table pokemon {
+  id integer [primary key]
+  pokemon_id integer
+  sprite varchar
+  atk_stat integer
+  spatk_stat integer
+  def_stat integer
+  spdef_stat integer
+  speed_stat integer
+  hp_stat integer
+  type_1 varchar 
+  type_2 varchar
+}
+
+Table favorites{
+  id integer [primary key]
+  user_id integer [ref: > users.id]
+  pokemon_id integer [ref: > pokemon.id]
+}
+
+Table teams_table {
+  id integer [primary key]
+  user_id integer [ref: > users.id]
+  team_id integer [ref: > team.id]
+}
+
+Table team{
+  id integer [primary key]
+  team_pokemon_id_1 integer [ref: - team_pokemon.id]
+  team_pokemon_id_2 integer [ref: - team_pokemon.id]
+  team_pokemon_id_3 integer [ref: - team_pokemon.id]
+  team_pokemon_id_4 integer [ref: - team_pokemon.id]
+  team_pokemon_id_5 integer [ref: - team_pokemon.id]
+  team_pokemon_id_6 integer [ref: - team_pokemon.id]
+}
+
+Table team_pokemon{
+  id integer [primary key]
+  pokemon_id integer 
+  move_1 integer [ref: <> moves.id]
+  move_2 integer [ref: <> moves.id]
+  move_3 integer [ref: <> moves.id]
+  move_4 integer [ref: <> moves.id]
+  held_item integer [ref: <> held_items.id]
+}
+
+Table moves{
+  id integer [primary key]
+  name varchar
+  power integer 
+  accuracy integer 
+  desc varchar
+}
+
+Table held_items{
+  id integer [primary key]
+  name varchar
+  desc varchar
+}
+
+Table saved_teams{
+  id integer [primary key]
+  user_id integer [ref: <> users.id]
+  team_id integer [ref: <> team.id]
+}
+
