@@ -10,14 +10,15 @@ Table users {
 
 Table pokemon {
   id integer [primary key]
-  pokemon_id integer
-  sprite varchar
-  atk_stat integer
-  spatk_stat integer
-  def_stat integer
-  spdef_stat integer
+  dex_number integer
+  sprites varchar 
+  shiny_sprites varchar
+  health_stat integer
+  attack_stat integer
+  special_atk_stat integer
+  defence_stat integer
+  special_def_stat integer
   speed_stat integer
-  hp_stat integer
   type_1 varchar 
   type_2 varchar
 }
@@ -28,7 +29,7 @@ Table favorites{
   pokemon_id integer [ref: > pokemon.id]
 }
 
-Table teams_table {
+Table user_teams {
   id integer [primary key]
   user_id integer [ref: > users.id]
   team_id integer [ref: > team.id]
@@ -52,6 +53,8 @@ Table team_pokemon{
   move_3 integer [ref: <> moves.id]
   move_4 integer [ref: <> moves.id]
   held_item integer [ref: <> held_items.id]
+  ability varchar
+  ability_desc varchar
 }
 
 Table moves{
