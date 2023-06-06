@@ -1,7 +1,22 @@
-from models import User, Pokemon, Favorite
+from models import User, Pokemon, Favorite, User_teams, Team, Team_pokemon, Held_item, Move
+from app import db
+
 import requests
+import json
+
+# DROP TABLE abilities, favorites, held_items, moves, pokemon, team_pokemon, teams, user_teams, users CASCADE;
+
+from string import Template
 
 getPokemonURL = "https://pokeapi.co/api/v2/pokemon/"
+getMoveURL = "https://pokeapi.co/api/v2/move/"
+getAbilityURL = "https://pokeapi.co/api/v2/ability/"
+getItemURL = "https://pokeapi.co/api/v2/item/"
+
+def createUser(name, pwd, email):
+    user = User.register(username=name, pwd = pwd, email = email)
+    db.session.add(user)
+    db.session.commit()
 
 def queryPokemonByNameOrId(pokemon_name_id):
     #grab pokemon data
