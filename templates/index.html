@@ -13,6 +13,18 @@
                     <p> {{fav_pokemon.name}} </p>
                 {% endfor %}
             </div>
+            <br>
+            <div>
+                <p> Teams: </p>
+                {% for team in user.teams%}
+                    <p> {{team.pokemon1.pokemon.name }}</p>
+                    <p> {{team.pokemon2.pokemon.name }}</p>
+                    <p> {{team.pokemon3.pokemon.name }}</p>
+                    <p> {{team.pokemon4.pokemon.name }}</p>
+                    <p> {{team.pokemon5.pokemon.name }}</p>
+                    <p> {{team.pokemon6.pokemon.name }}</p>
+                {% endfor %}
+            </div>
         </div>
         <br>
     {% endfor %}
