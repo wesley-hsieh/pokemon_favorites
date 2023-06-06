@@ -15,7 +15,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False)
 
     favorites = db.relationship('Pokemon', secondary='favorites', backref='user')
-    teams = db.relationship('Team', secondary="teams_tables", backref="user")
+    teams = db.relationship('Team', secondary='user_teams', backref="user")
 
     @classmethod
     def register(cls, username, pwd, email):
@@ -42,11 +42,11 @@ class Pokemon(db.Model):
     name = db.Column(db.Text, nullable=False)
     sprites = db.Column(db.Text)
     shiny_sprites = db.Column(db.Text)
-    hp_stat = db.Column(db.Integer)
-    atk_stat = db.Column(db.Integer)
-    def_stat = db.Column(db.Integer)
-    spatk_stat = db.Column(db.Integer)
-    spdef_stat = db.Column(db.Integer)
+    health_stat = db.Column(db.Integer)
+    attack_stat = db.Column(db.Integer)
+    defence_stat = db.Column(db.Integer)
+    special_atk_stat = db.Column(db.Integer)
+    special_def_stat = db.Column(db.Integer)
     speed_stat = db.Column(db.Integer)
     type_1 = db.Column(db.Text, nullable=False)
     type_2 = db.Column(db.Text)
@@ -61,6 +61,7 @@ class Pokemon(db.Model):
 
 class Favorite(db.Model):
     __tablename__ = "favorites"
+    __table_args__ = (db.UniqueConstraint('user_id', 'pokemon_id'),)
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
