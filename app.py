@@ -5,6 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, Pokemon, Favorite
+from forms import UserAddForm, LoginForm
 
 CURR_USER_KEY = "curr_user"
 
@@ -26,5 +27,16 @@ db.create_all()
 def homepage():
 
     users = User.query.all()
-
     return render_template("index.html", users = users)
+
+@app.route('/login')
+def login():
+
+    form = LoginForm()
+    return render_template("login.html", form = form)
+
+@app.route('/signup')
+def signup():
+    form = UserAddForm()
+
+    return render_template("signup.html", form = form)
