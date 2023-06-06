@@ -82,4 +82,7 @@ try:
 except:
     db.session.rollback()
 
+#populate held_item table
+createAllItems()
+
 db.session.commit()

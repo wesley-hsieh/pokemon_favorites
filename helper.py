@@ -80,3 +80,25 @@ def queryPokemonByNameOrId(pokemon_name_id):
 
     )
 
+def createAllItems():
+    request = requests.get(getItemURL)
+    data = request.json()
+    item_count = data["count"]
+
+    for x in range(1, item_count+1):
+        try:
+            request = requests.get(getItemURL+str(x))
+            data = request.json()
+
+            if (Held_item.query.filter(Held_item.name.ilike(data["name"].replace('-', ' '))).count() ==0):
+                for entry in data["effect_entries"]:
+                    if entry["language"]["name"] == "en":
+                        item = Held_item(
+                            name = data["name"].replace('-',' '),
+                            desc = entry["short_effect"],
+                            sprites = data["sprites"]["default"]
+                        )
+                db.session.add(item)
+                db.session.commit()
+        except:
+            pass
