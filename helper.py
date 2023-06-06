@@ -114,6 +114,43 @@ def queryAbilityDesc(ability_name):
                 return entry["short_effect"]
     except:
         print("Some error occured")
+
+def createTeamPokemon(name, move_1, move_2, move_3, move_4, ability, held_item):
+    pok = Pokemon.query.filter(Pokemon.name == name).first()
+    print(pok.id)
+
+    held_item_id = None
+    try:
+        held_item_id = Held_item.query.filter(Held_item.name == held_item).first().id
+        print(held_item_id)
+    except:
+        pass
+
+    return Team_pokemon(
+        pokemon_id = Pokemon.query.filter(Pokemon.name == name).first().id,
+        move_1 = Move.query.filter(Move.name == move_1).first().id,
+        move_2 = Move.query.filter(Move.name == move_2).first().id,
+        move_3 = Move.query.filter(Move.name == move_3).first().id,
+        move_4 = Move.query.filter(Move.name == move_4).first().id,
+        ability = ability,
+        ability_desc = queryAbilityDesc(ability),
+        held_item = held_item_id
+    )
+
+def createTeam(pokemon_1, pokemon_2, pokemon_3, pokemon_4, pokemon_5, pokemon_6):
+    return Team(
+        team_pokemon_1 = pokemon_1.id,
+        team_pokemon_2 = pokemon_2.id,
+        team_pokemon_3 = pokemon_3.id,
+        team_pokemon_4 = pokemon_4.id,
+        team_pokemon_5 = pokemon_5.id,
+        team_pokemon_6 = pokemon_6.id
+    )
+
+def createUserTeams(user_id, team_id):
+    return User_teams(
+        user_id = user_id,
+        team_id = team_id
     )
 
 def createAllItems():
