@@ -76,8 +76,44 @@ def queryPokemonByNameOrId(pokemon_name_id):
 
         return queriedPokemon
 
+def createMove(move_name):
+    request = requests.get(getMoveURL + move_name)
     data = request.json()
 
+    queriedMove = Move(
+        name = move_name.replace('-', ' '),
+        power = data["power"],
+        damage_class = data["damage_class"]["name"],
+        accuracy = data["accuracy"],
+        type = data["type"]["name"],
+    )
+
+    #check if the move effect has a "$" sign signifying string interpolation
+    try:
+        move_desc = data["effect_entries"][0]["short_effect"]
+        if(move_desc.find("$")):
+            move_desc_template = Template(data["effect_entries"][0]["short_effect"])
+            queriedMove.setDesc(move_desc_template.substitute(effect_chance=data["effect_chance"]))
+        else:
+            queriedMove.setDesc(move_desc)
+    except:
+        pass
+
+    db.session.add(queriedMove)
+    db.session.commit()
+
+def queryAbilityDesc(ability_name):
+    try:
+        request = requests.get(getAbilityURL + ability_name.replace(" ", "-"))
+        data = request.json()
+
+        for entry in data["effect_entries"]:
+#             print(entry)
+#             print(entry["language"]["name"])
+            if entry["language"]["name"] == "en":
+                return entry["short_effect"]
+    except:
+        print("Some error occured")
     )
 
 def createAllItems():
