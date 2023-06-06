@@ -85,4 +85,26 @@ except:
 #populate held_item table
 createAllItems()
 
+#create example user teams
+
+#create team_pokemon and commit
+red_pikachu = createTeamPokemon("pikachu", "charm", "quick attack", "thunderbolt", "thunder", "static", "light ball")
+red_blastoise = createTeamPokemon("blastoise", "blizzard", "hydro cannon", "flash cannon", "focus blast", "torrent", "mystic water")
+red_charizard = createTeamPokemon("charizard", "blast burn", "flare blitz", "dragon pulse", "air slash", "blaze", "charcoal")
+red_venusaur = createTeamPokemon("venusaur", "frenzy plant", "giga drain", "sludge bomb", "sleep powder", "overgrow", "miracle seed")
+red_lapras = createTeamPokemon("lapras", "body slam", "brine", "blizzard", "psychic", "shell armor", None)
+db.session.add_all([red_pikachu, red_blastoise, red_charizard, red_lapras, red_snorlax, red_venusaur])
 db.session.commit()
+
+#create the Team and commit
+red_team = createTeam(red_pikachu, red_blastoise, red_charizard, red_venusaur, red_lapras, red_snorlax)
+db.session.add(red_team)
+db.session.commit()
+
+#create the user and team connection and commit
+red_user_team = createUserTeams(1, red_team.id)
+db.session.add(red_user_team)
+db.session.commit()
+
+
+
