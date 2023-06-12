@@ -119,3 +119,31 @@ def logout():
     flash("You have successfully logged out.", 'success')
     return redirect("/login")
 
+@app.route('/teams')
+def display_teams():
+
+    teams = Team.query.all()
+
+    return render_template("/teams.html", teams = teams)
+
+@app.route('/teams/<int:team_id>', methods=["GET", "POST"])
+def edit_team():
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    team = Team.query.get_or_404(team_id)
+
+    return render_template("/team.html", team = team)
+
+@app.route("/user/<int:user_id>")
+def user_profile(user_id):
+    """Show the user's profile."""
+    print("user id", user_id)
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('profile.html', user=user)
+
+
+

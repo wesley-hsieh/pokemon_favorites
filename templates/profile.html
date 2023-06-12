@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1> Profile content here</h1>
+
+{% for pokemon in user.favorites %}
+    <div>
+        
+        <img src="{{pokemon.sprites}}">
+    </div>
+{% endfor %}
+
+{% for team in user.teams %}
+
+    <p> Team here</p>
+    <div>
+        <p>{{team.name}}</p>
+        <img src="{{team.pokemon1.pokemon.sprites}}">
+        <img src="{{team.pokemon2.pokemon.sprites}}">
+        <img src="{{team.pokemon3.pokemon.sprites}}">
+        <img src="{{team.pokemon4.pokemon.sprites}}">
+        <img src="{{team.pokemon5.pokemon.sprites}}">
+        <img src="{{team.pokemon6.pokemon.sprites}}">
+    </div>
+
+{% endfor %}
+
+{% endblock %}
