@@ -15,7 +15,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False)
 
     favorites = db.relationship('Pokemon', secondary='favorites', backref='user')
-    teams = db.relationship('Team', secondary='user_teams', backref="user")
+    teams = db.relationship('Team', backref="user")
     saved_teams = db.relationship('Team', secondary='saved_teams', backref="user_saved")
 
     @classmethod
@@ -28,7 +28,7 @@ class User(db.Model):
 
     @classmethod
     def authenticate(cls, username, pwd):
-        u = User.query.filter_by(username=username.first())
+        u = User.query.filter_by(username=username).first()
 
         if u and bcrypt.check_password_hash(u.password, pwd):
             return u
@@ -71,22 +71,14 @@ class Favorite(db.Model):
     user = db.relationship('User', backref="favorite")
     pokemon = db.relationship('Pokemon', backref="favorite")
 
-class User_teams(db.Model):
-    __tablename__ = "user_teams"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
-
-    user = db.relationship('User', backref="user_teams")
-    team = db.relationship('Team', backref="user_teams")
-
 class Team(db.Model):
     __tablename__ = "teams"
 
     #Pokemon do not need to be unique (add docstring)
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     team_pokemon_1 = db.Column(db.Integer, db.ForeignKey('team_pokemon.id'))
     team_pokemon_2 = db.Column(db.Integer, db.ForeignKey('team_pokemon.id'))
     team_pokemon_3 = db.Column(db.Integer, db.ForeignKey('team_pokemon.id'))
@@ -114,6 +106,7 @@ class Team_pokemon(db.Model):
     ability = db.Column(db.Text)
     ability_desc = db.Column(db.Text)
     held_item = db.Column(db.Integer, db.ForeignKey("held_items.id"))
+    shiny = db.Column(db.Boolean)
 
     pokemon = db.relationship('Pokemon', backref="team_pokemon")
     move1 = db.relationship('Move', foreign_keys=[move_1])
