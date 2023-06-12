@@ -1,8 +1,11 @@
-from models import User, Pokemon, Favorite, User_teams, Team, Team_pokemon, Held_item, Move
+from models import User, Pokemon, Favorite, Team, Team_pokemon, Held_item, Move
 from app import db
 
 import requests
 import json
+
+from psycopg2.errors import UndefinedFunction
+from sqlalchemy.exc import ProgrammingError
 
 # DROP TABLE abilities, favorites, held_items, moves, pokemon, team_pokemon, teams, user_teams, users CASCADE;
 
@@ -18,13 +21,19 @@ def createUser(name, pwd, email):
     db.session.add(user)
     db.session.commit()
 
+#tooltip, user searched for a pokemon with multiple forms
+# "did you mean to look for x/y/z"
+# "show user a list of pokemon for pokemon x/y/z"
 def queryPokemonByNameOrId(pokemon_name_id):
     #TODO: check if pokemon in database
     pokemonByName, pokemonByID = None, None
     try:
         pokemonByName = Pokemon.query.filter(Pokemon.name == pokemon_name_id).one_or_none()
-    except:
+    except (UndefinedFunction, ProgrammingError) as err:
+        db.session.rollback()
         pokemonByID = Pokemon.query.filter(Pokemon.dex_number == pokemon_name_id).one_or_none()
+
+    # "Tooltip: flash 'maybe try using the pokedex number'"
 
     #ternary operation to get which of the two queries evaluated to completion
     query = pokemonByName if pokemonByName else pokemonByID
@@ -33,7 +42,7 @@ def queryPokemonByNameOrId(pokemon_name_id):
         return query
     else:
         #grab pokemon data
-        request = requests.get(getPokemonURL+pokemon_name_id)
+        request = requests.get(getPokemonURL+str(pokemon_name_id))
         data = request.json()
 
         #populate moves table with data(?)
@@ -76,6 +85,9 @@ def queryPokemonByNameOrId(pokemon_name_id):
 
         return queriedPokemon
 
+def queryPokemonMoves(pokemon_name_id):
+    print("HI")
+
 def createMove(move_name):
     request = requests.get(getMoveURL + move_name)
     data = request.json()
@@ -117,12 +129,12 @@ def queryAbilityDesc(ability_name):
 
 def createTeamPokemon(name, move_1, move_2, move_3, move_4, ability, held_item):
     pok = Pokemon.query.filter(Pokemon.name == name).first()
-    print(pok.id)
+#     print(pok.id)
 
     held_item_id = None
     try:
         held_item_id = Held_item.query.filter(Held_item.name == held_item).first().id
-        print(held_item_id)
+#         print(held_item_id)
     except:
         pass
 
@@ -137,8 +149,10 @@ def createTeamPokemon(name, move_1, move_2, move_3, move_4, ability, held_item):
         held_item = held_item_id
     )
 
-def createTeam(pokemon_1, pokemon_2, pokemon_3, pokemon_4, pokemon_5, pokemon_6):
+def createTeam(id, name, pokemon_1, pokemon_2, pokemon_3, pokemon_4, pokemon_5, pokemon_6):
     return Team(
+        user_id = id,
+        name = name,
         team_pokemon_1 = pokemon_1.id,
         team_pokemon_2 = pokemon_2.id,
         team_pokemon_3 = pokemon_3.id,
