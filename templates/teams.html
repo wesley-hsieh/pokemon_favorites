@@ -5,6 +5,29 @@
 
 <h1> Teams here</h1>
 
+{% for team in teams %}
+
+
+<a href="/team/{{team.id}}>"><p>{{team.name}}</p></a>
+<table>
+    <tr>
+        {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6] %}
+        <td>
+            <div>
+                <a href="/pokemon/{{entry.pokemon.name}}"><img src="{{entry.pokemon.sprites}}"></a>
+                <p>{{entry.move1.name}}</p>
+                <p>{{entry.move2.name}}</p>
+                <p>{{entry.move3.name}}</p>
+                <p>{{entry.move4.name}}</p>
+
+                <img src="{{entry.held_items.sprites}}">
+            </div>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+
+{% endfor %}
 
 
 {% endblock %}
