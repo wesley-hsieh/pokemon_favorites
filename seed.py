@@ -1,7 +1,7 @@
 """Seed database with sample data from API"""
 
 from app import db
-from models import User, Pokemon, Favorite, User_teams, Team, Team_pokemon, Held_item, Move
+from models import User, Pokemon, Favorite, Team, Team_pokemon, Held_item, Move
 
 from string import Template
 import requests
@@ -13,14 +13,18 @@ from helper import createUser, queryPokemonByNameOrId, queryPokemonMoves, create
 db.drop_all()
 db.create_all()
 
+print("populate users")
+
 try:
     createUser("red", "password", "champion@email.com")
     createUser("brock", "pasword", "rocksaregreat@email.com")
     createUser("misty", "password", "waterisbetterdummy@email.com")
     createUser("sabrina", "password", "ghostsaremyfriend@email.com")
+    createUser("admin", "admin", "admin@adminemail.com")
 except:
     db.session.rollback()
 
+print("populate pokemon")
 geodude = queryPokemonByNameOrId("geodude")
 pikachu = queryPokemonByNameOrId("pikachu")
 blastoise = queryPokemonByNameOrId("blastoise")
@@ -73,7 +77,8 @@ red_fav6 = Favorite(
 
 red_fav7 = Favorite(
     user_id = 1,
-    pokemon_id = 8
+    pokemon_id = 8,
+    shiny = True
 )
 
 try:
@@ -83,28 +88,27 @@ except:
     db.session.rollback()
 
 #populate held_item table
+print("populate held items")
 createAllItems()
 
 #create example user teams
 
 #create team_pokemon and commit
+print("populate team")
 red_pikachu = createTeamPokemon("pikachu", "charm", "quick attack", "thunderbolt", "thunder", "static", "light ball")
 red_blastoise = createTeamPokemon("blastoise", "blizzard", "hydro cannon", "flash cannon", "focus blast", "torrent", "mystic water")
 red_charizard = createTeamPokemon("charizard", "blast burn", "flare blitz", "dragon pulse", "air slash", "blaze", "charcoal")
 red_venusaur = createTeamPokemon("venusaur", "frenzy plant", "giga drain", "sludge bomb", "sleep powder", "overgrow", "miracle seed")
+red_snorlax = createTeamPokemon("snorlax", "shadow ball", "crunch", "blizzard", "giga impact", "thick fat", "leftoevers")
 red_lapras = createTeamPokemon("lapras", "body slam", "brine", "blizzard", "psychic", "shell armor", None)
 db.session.add_all([red_pikachu, red_blastoise, red_charizard, red_lapras, red_snorlax, red_venusaur])
 db.session.commit()
 
 #create the Team and commit
-red_team = createTeam(red_pikachu, red_blastoise, red_charizard, red_venusaur, red_lapras, red_snorlax)
+red_team = createTeam(1, "HGSS Mt.Silver", red_pikachu, red_blastoise, red_charizard, red_venusaur, red_lapras, red_snorlax)
 db.session.add(red_team)
 db.session.commit()
 
-#create the user and team connection and commit
-red_user_team = createUserTeams(1, red_team.id)
-db.session.add(red_user_team)
-db.session.commit()
 
 
 
