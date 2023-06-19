@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, Pokemon, Favorite, Team, Team_pokemon, Held_item, Move, Saved_teams
 from forms import UserAddForm, LoginForm
+from helper import queryPokemonByNameOrId, queryPokemonMoves, createMove, queryAbilityDesc, createTeamPokemon, createTeam, createUserTeams, createAllItems
 
 CURR_USER_KEY = "curr_user"
 
@@ -127,12 +128,24 @@ def display_teams():
     return render_template("/teams.html", teams = teams)
 
 @app.route('/teams/<int:team_id>', methods=["GET", "POST"])
-def edit_team():
+def display_team(team_id):
+    '''Route to display a team'''
+    team = Team.query.get_or_404(team_id)
+
+    print(team)
+    return render_template("/team.html", team = team)
+
+@app.route('/teams/edit/<int:team_id>', methods=["GET", "POST"])
+def edit_team(team_id):
+    '''Specific route for editing a team'''
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
     team = Team.query.get_or_404(team_id)
+
+    print(team)
+    for
 
     return render_template("/team.html", team = team)
 
@@ -144,6 +157,27 @@ def user_profile(user_id):
     user = User.query.get_or_404(user_id)
 
     return render_template('profile.html', user=user)
+
+@app.route("/pokemon/<int:pokemon_id>")
+def display_pokemon_with_id(pokemon_id):
+    """Display the data for a Pokemon"""
+
+    print("pokemon_id", pokemon_id)
+
+    pokemon = Pokemon.query.get_or_404(pokemon_id)
+
+    return render_template("pokemon.html", pokemon = pokemon)
+
+@app.route("/pokemon/<string:pokemon_name>")
+def display_pokemon_with_name(pokemon_name):
+    """Display the data for a Pokemon"""
+
+    print("pokemon_name", pokemon_name)
+
+    pokemon = Pokemon.query.filter(Pokemon.name == pokemon_name).one_or_none()
+
+    return render_template("pokemon.html", pokemon = pokemon)
+
 
 
 
