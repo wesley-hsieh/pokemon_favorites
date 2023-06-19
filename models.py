@@ -9,6 +9,21 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
+#   use pytest for testing
+#   tests give confidence to change code
+#   where to choose to "poke" at
+#   change test everytime you change something, that's bad
+#   strike balance between high level/low level
+#
+
+#   example: trying test web application, podcast server (host internally at apple)
+#   top level tests -> basic functionality, if podcast in database, request by id, does it give me the right xml
+#   podcast files are stored in amazons3, what happens if amazon says too many requests
+#   test environment
+#   test pyramid, integration test.
+#   test if code we have to properly handle errors in unit tests
+#   mocks? create own code to mimic s3 and give back error that would've been returned by real s3
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
@@ -51,6 +66,7 @@ class Pokemon(db.Model):
     speed_stat = db.Column(db.Integer)
     type_1 = db.Column(db.Text, nullable=False)
     type_2 = db.Column(db.Text)
+    #forms = db.Column
 
     def setTypes(self, types):
         self.type_1 = types[0]
@@ -60,6 +76,9 @@ class Pokemon(db.Model):
         except:
             pass
 
+    def asDict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class Favorite(db.Model):
     __tablename__ = "favorites"
     __table_args__ = (db.UniqueConstraint('user_id', 'pokemon_id'),)
@@ -67,6 +86,7 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     pokemon_id = db.Column(db.Integer, db.ForeignKey('pokemon.id'))
+    shiny = db.Column(db.Boolean)
 
     user = db.relationship('User', backref="favorite")
     pokemon = db.relationship('Pokemon', backref="favorite")
