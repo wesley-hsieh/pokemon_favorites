@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+<script type="text/javascript">
+    let pokemon_js = {{ pokemon.asDict()|tojson|safe }};
+</script>
+<script type="text/javascript">
+    {% include "display_pokemon.js" %}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<h1> Display pokemon data here</h1>
+
+<div>
+    <img id="pokemon-image" src="{{pokemon.sprites}}">
+    <label id="shiny-switch" class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+    </label>
+
+    <p>{{pokemon.dex_number}}</p>
+    <p>{{pokemon.name}}</p>
+    <p>{{pokemon.health_stat}}</p>
+    <p>{{pokemon.attack_stat}}</p>
+    <p>{{pokemon.defence_stat}}</p>
+    <p>{{pokemon.special_att_stat}}</p>
+    <p>{{pokemon.special_def_stat}}</p>
+    <p>{{pokemon.speed_stat}}</p>
+    <p>{{pokemon.type_1}}</p>
+    {% if pokemon.type_2 != None %}
+    <p>{{pokemon.type_2}}</p>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}
+
+<!--id = db.Column(db.Integer, primary_key=True, autoincrement=True)-->
+<!--dex_number = db.Column(db.Integer, nullable=False, unique=True)-->
+<!--name = db.Column(db.Text, nullable=False)-->
+<!--sprites = db.Column(db.Text)-->
+<!--shiny_sprites = db.Column(db.Text)-->
+<!--health_stat = db.Column(db.Integer)-->
+<!--attack_stat = db.Column(db.Integer)-->
+<!--defence_stat = db.Column(db.Integer)-->
+<!--special_atk_stat = db.Column(db.Integer)-->
+<!--special_def_stat = db.Column(db.Integer)-->
+<!--speed_stat = db.Column(db.Integer)-->
+<!--type_1 = db.Column(db.Text, nullable=False)-->
+<!--type_2 = db.Column(db.Text)-->
