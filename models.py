@@ -133,8 +133,11 @@ class Team_pokemon(db.Model):
     move2 = db.relationship('Move', foreign_keys=[move_2])
     move3 = db.relationship('Move', foreign_keys=[move_3])
     move4 = db.relationship('Move', foreign_keys=[move_4])
-
     held_items = db.relationship('Held_item', backref="team_pokemon")
+
+    def asDict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Held_item(db.Model):
     __tablename__ = "held_items"
