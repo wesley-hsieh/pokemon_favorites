@@ -27,5 +27,60 @@
     </table>
 </div>
 
+<div id="edit_pokemon" style="visibility:hidden">
+    <form action="/teams/save/{{team.id}}" method="post">
+        <div>
+            <label for="pokemon">Choose a Pokemon:</label>
+            <select name="pokemon" id="pokemon">
+                {% for pokemon in allPokemon%}
+                    <option value={{pokemon}}>{{pokemon}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="move_1">Move 1:</label>
+            <select name="move_1" id="move_1">
+            </select>
+        </div>
+        <div>
+            <label for="move_2">Move 2:</label>
+            <select name="move_2" id="move_2">
+            </select>
+        </div>
+        <div>
+            <label for="move_3">Move 3:</label>
+            <select name="move_3" id="move_3">
+            </select>
+        </div>
+        <div>
+            <label for="move_4">Move 4:</label>
+            <select name="move_4" id="move_4">
+            </select>
+        </div>
+        <div>
+            <label for="held_item">Held Item:</label>
+            <select name="held_item" id="held_item">
+                {% for item in allItems%}
+                <option value="{{item}}">{{item}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="ability">Ability:</label>
+            <select name="ability" id="ability">
+
+            </select>
+        </div>
+        <input type="submit" value="Save">
+        <div style="visibility:hidden">
+            <label for="team_pokemon_id"></label>
+            <select name="team_pokemon_id" id="team_pokemon_id">
+                {% for id in ids%}
+                <option value={{id}}>{{id}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </form>
 </div>
 {% endblock %}
