@@ -1,5 +1,70 @@
 {% extends 'base.html' %}
 
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        let pokemon_list = [{{team.pokemon1.asDict() | tojson}},
+        {{team.pokemon2.asDict() | tojson}},
+        {{team.pokemon3.asDict() | tojson}},
+        {{team.pokemon4.asDict() | tojson}},
+        {{team.pokemon5.asDict() | tojson}},
+        {{team.pokemon6.asDict() | tojson}}];
+
+        $("img").on("click", async function (evt) {
+            $("#edit_pokemon").css("visibility", "hidden");
+            let team_pokemon_id = evt.target.title;
+            let pokemon_name = evt.target.id;
+
+            let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${evt.target.id}`);
+            $('#ability option').remove();
+            let abilities = response.data["abilities"].map(async function (value, index, array) {
+                let ability = value["ability"]["name"].replace('-', ' ');
+
+                let ability_request = await axios.get(`https://pokeapi.co/api/v2/ability/${value["ability"]["name"]}`);
+                let ability_desc = ability_request.data["effect_entries"].map(function(value, index, array){
+                   if (value["language"]["name"] == "en"){
+
+                       $('#ability').append($('<option>', {value: `${ability},${value["short_effect"]}`}).text(ability));
+                       return value["short_effect"];
+                   }
+                });
+                return ability;
+            });
+
+            $('#move_1 option').remove();
+            $('#move_2 option').remove();
+            $('#move_3 option').remove();
+            $('#move_4 option').remove();
+            let moves = response.data["moves"].map(function(value, index, array){
+                let move = value["move"]["name"].replace("-"," ");
+                $('#move_1').append($('<option>', { value : move }).text(move));
+                $('#move_2').append($('<option>', { value : move }).text(move));
+                $('#move_3').append($('<option>', { value : move }).text(move));
+                $('#move_4').append($('<option>', { value : move }).text(move));
+
+                return move;
+            });
+
+            //change all the option values to reflect the current pokemon's values
+            $('#pokemon').val(pokemon_name);
+            $("#team_pokemon_id").val(team_pokemon_id);
+            pokemon_list.map(function(pokemon, index, array){
+                if (pokemon.id == evt.target.title){
+                    $('#ability').val(pokemon.ability);
+
+                    /*
+                        ideally here we would also change the select options for the pokemon's
+                        moves and held_item, however since we cannot access our SQLalchemy ORM
+                        functionality in a javascript script, it is difficult to do so.
+                    */
+                }
+            });
+
+            //make the form visible after everything has been set
+            $("#edit_pokemon").css("visibility", "visible");
+
+        });
+    });
 {% endblock %}
 
 {% block content %}
