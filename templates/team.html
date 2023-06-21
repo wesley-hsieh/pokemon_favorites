@@ -3,13 +3,15 @@
 
 {% block content %}
 
-<h1> Teams here</h1>
+<h1> Team here</h1>
 
 <p> Have an 'if' clause here letting the author/creator of team edit the team</p>
 
 {% if g.user %}
-    <p> hi {{g.user.name}}</p>
-    <a href='/teams/edit/{{team.id}}'><button>Edit</button></a>
+    {% if g.user.id == team.user_id %}
+        <p> hi {{g.user.name}}</p>
+        <a href='/teams/edit/{{team.id}}'><button>Edit</button></a>
+    {% endif %}
 {% endif %}
 
 <p>{{team.name}}</p>
