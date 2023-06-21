@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, Pokemon, Favorite, Team, Team_pokemon, Held_item, Move, Saved_teams
-from forms import UserAddForm, LoginForm
+from forms import UserAddForm, LoginForm, PokemonForm
 from helper import queryPokemonByNameOrId, queryPokemonMoves, createMove, queryAbilityDesc, createTeamPokemon, createTeam, createUserTeams, createAllItems
 
 CURR_USER_KEY = "curr_user"
@@ -133,21 +133,57 @@ def display_team(team_id):
     team = Team.query.get_or_404(team_id)
 
     print(team)
-    return render_template("/team.html", team = team)
+    return render_template("/team.html", team=team)
 
 @app.route('/teams/edit/<int:team_id>', methods=["GET", "POST"])
 def edit_team(team_id):
     '''Specific route for editing a team'''
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
     team = Team.query.get_or_404(team_id)
+    team_pokemon = [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6]
 
-    print(team)
-    for
+    allPokemon = [pokemon.name for pokemon in Pokemon.query.all()]
+    allItems = [item.name for item in Held_item.query.all()]
+    teamPokemonIds = [pokemon.id for pokemon in Team_pokemon.query.all()]
 
-    return render_template("/team.html", team = team)
+    return render_template("team_edit.html", team = team, allPokemon = allPokemon, allItems= allItems, ids = teamPokemonIds)
+
+# @app.route("/teams/save/<int:team_id>/<string:pokemon_name>/<string:move_1>/<string:move_2>/<string:move_3>/<string:move_4>/<string:held_item>", methods=["POST"])
+@app.route("/teams/save/<int:team_id>", methods=["POST"])
+def save_team_state(team_id):
+    pokemon_name = request.form.get("pokemon")
+    move_1 = request.form.get("move_1")
+    move_2 = request.form.get("move_2")
+    move_3 = request.form.get("move_3")
+    move_4 = request.form.get("move_4")
+    held_item = request.form.get("held_item")
+    ability = request.form.get("ability").split(',')
+
+    #id of the team pokemon to edit.
+    team_pokemon_id = request.form.get("team_pokemon_id")
+
+    print("pokemon name", pokemon_name)
+    print("move 1", move_1)
+    print("move2", move_2)
+    print("move3", move_3)
+    print("MOve4", move_4)
+    print("Held_item", held_item)
+    print("teampokemodn id", team_pokemon_id)
+    print(ability)
+
+    team_pokemon = Team_pokemon.query.get_or_404(team_pokemon_id)
+
+    team_pokemon.pokemon_id = Pokemon.query.filter(Pokemon.name == pokemon_name).one_or_none().id
+    team_pokemon.move_1 = Move.query.filter(Move.name == move_1).one_or_none().id
+    team_pokemon.move_2 = Move.query.filter(Move.name == move_2).one_or_none().id
+    team_pokemon.move_3 = Move.query.filter(Move.name == move_3).one_or_none().id
+    team_pokemon.move_4 = Move.query.filter(Move.name == move_4).one_or_none().id
+    team_pokemon.ability = ability[0]
+    team_pokemon.ability_desc = ability[1]
+    team_pokemon.held_item = Held_item.query.filter(Held_item.name == held_item).one_or_none().id
+
+    db.session.commit()
+
+    return redirect(f"/teams/edit/{team_id}")
 
 @app.route("/user/<int:user_id>")
 def user_profile(user_id):
@@ -166,7 +202,7 @@ def display_pokemon_with_id(pokemon_id):
 
     pokemon = Pokemon.query.get_or_404(pokemon_id)
 
-    return render_template("pokemon.html", pokemon = pokemon)
+    return render_template("pokemon.html", pokemon=pokemon)
 
 @app.route("/pokemon/<string:pokemon_name>")
 def display_pokemon_with_name(pokemon_name):
