@@ -66,7 +66,8 @@ class Pokemon(db.Model):
     speed_stat = db.Column(db.Integer)
     type_1 = db.Column(db.Text, nullable=False)
     type_2 = db.Column(db.Text)
-    #forms = db.Column
+    moves = db.Column(db.Text)
+    abilities = db.Column(db.Text)
 
     def setTypes(self, types):
         self.type_1 = types[0]
@@ -138,7 +139,6 @@ class Team_pokemon(db.Model):
     def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-
 class Held_item(db.Model):
     __tablename__ = "held_items"
 
@@ -146,6 +146,9 @@ class Held_item(db.Model):
     name = db.Column(db.Text, nullable=False, unique=True)
     desc = db.Column(db.Text, nullable=False)
     sprites = db.Column(db.Text)
+
+    def asDict(self):
+            return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class Move(db.Model):
     __tablename__ = "moves"
@@ -161,6 +164,9 @@ class Move(db.Model):
     def setDesc(self, desc):
         self.desc = desc
 
+    def asDict(self):
+            return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 class Saved_teams(db.Model):
     __tablename__ = "saved_teams"
 
@@ -168,12 +174,12 @@ class Saved_teams(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
 
-# class Ability(db.Model):
-#     __tablename__ = "abilities"
-#
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     name = db.Column(db.Text, nullable=False)
-#     desc = db.Column(db.Text)
+class Ability(db.Model):
+    __tablename__ = "abilities"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False)
+    desc = db.Column(db.Text)
 
 def connect_db(app):
     """Connect to database."""
