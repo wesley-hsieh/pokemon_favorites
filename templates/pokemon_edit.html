@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+<script type="text/javascript">
+    let pokemon_list = {{allPokemon | tojson}};
+    // console.log("pokemon_list: ", pokemon_list);
+    $(document).ready(function() {
+
+        $("#pokemon").on("change", function(evt){
+            // console.log("target", evt.target.value);
+            let pokemon_name = evt.target.value;
+            let target_pokemon = pokemon_list.find(element => element.name == pokemon_name);
+            console.log(target_pokemon);
+
+            let pokemon_moves = target_pokemon.moves.split(',');
+
+            let pokemon_abilities = target_pokemon.abilities.split(',');
+            console.log(pokemon_abilities);
+
+            $('#move_1 option').remove();
+            $('#move_2 option').remove();
+            $('#move_3 option').remove();
+            $('#move_4 option').remove();
+            for (let move of pokemon_moves){
+                if (move != ""){
+                    $('#move_1').append($('<option>', { value : move }).text(move));
+                    $('#move_2').append($('<option>', { value : move }).text(move));
+                    $('#move_3').append($('<option>', { value : move }).text(move));
+                    $('#move_4').append($('<option>', { value : move }).text(move));
+                }
+            }
+
+            $('#ability option').remove();
+            for (let ability of pokemon_abilities){
+                if (ability != ""){
+                    $('#ability').append($('<option>', {value: ability}).text(ability));
+                }
+            }
+        })
+
+    });
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+{% if team_pokemon %}
+<h1>editing this pokemon {{team_pokemon.name}}</h1>
+{% else %}
+<h1>Adding a new pokemon!</h1>
+{% endif %}
+<p>{{team.name}}</p>
+
+<a href="/teams/{{team.id}}"><button>Back</button></a>
+
+<div>
+    <table>
+        <tr>
+            {% if team_pokemon %}
+            <td>
+                {% if team_pokemon.pokemon %}
+                <img id="{{team_pokemon.pokemon.name}}" title="{{team_pokemon.id}}" src="{{team_pokemon.pokemon.sprites}}">
+                {% else %}
+                <img src="/static/images/question_mark.png"  style="width:96px;height:96px;>
+                {% endif %}
+
+                <p>{{team_pokemon.move1.name}}</p>
+                <p>{{team_pokemon.move2.name}}</p>
+                <p>{{team_pokemon.move3.name}}</p>
+                <p>{{team_pokemon.move4.name}}</p>
+                <p>{{team_pokemon.ability}}</p>
+                <img src="{{team_pokemon.held_items.sprites}}">
+            </td>
+            {% else %}
+            <td>
+                <div class="question_mark_logo">
+                    <img src="/static/images/question_mark.png" style="width:96px;height:96px;">
+                </div>
+            </td>
+            {% endif %}
+        </tr>
+    </table>
+</div>
+
+<div id="edit_pokemon">
+    <form action="/teams/save/{{team.id}}/{{team_pokemon.id}}" method="post">
+        <div>
+            <label for="pokemon">Choose a Pokemon:</label>
+            <select name="pokemon" id="pokemon">
+                {% for pokemon in allPokemon%}
+                    {% if team_pokemon.pokemon %}
+                        {% if pokemon.name == team_pokemon.pokemon.name%}
+                        <option value={{pokemon.name}} selected>{{pokemon.name}}</option>
+                        {% else %}
+                        <option value={{pokemon.name}}>{{pokemon.name}}</option>
+                        {% endif %}
+                    {% else %}
+                        <option value={{pokemon.name}}>{{pokemon.name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="move_1">Move 1:</label>
+            <select name="move_1" id="move_1">
+                {% for move in allMoves%}
+                    {% if team_pokemon.move1 %}
+                        {% if team_pokemon.move1.name == move%}
+                        <option value="{{move}}" selected>{{move}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{move}}">{{move}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="move_2">Move 2:</label>
+            <select name="move_2" id="move_2">
+                {% for move in allMoves%}
+                    {% if team_pokemon.move2 %}
+                        {% if team_pokemon.move2.name == move%}
+                        <option value="{{move}}"selected>{{move}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{move}}">{{move}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="move_3">Move 3:</label>
+            <select name="move_3" id="move_3">
+                {% for move in allMoves%}
+                    {% if team_pokemon.move3 %}
+                        {% if team_pokemon.move3.name == move%}
+                        <option value="{{move}}" selected>{{move}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{move}}">{{move}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="move_4">Move 4:</label>
+            <select name="move_4" id="move_4">
+                {% for move in allMoves%}
+                    {% if team_pokemon.move4 %}
+                        {% if team_pokemon.move4.name == move%}
+                        <option value="{{move}}" selected>{{move}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{move}}">{{move}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="held_item">Held Item:</label>
+            <select name="held_item" id="held_item">
+                {% for item in allItems%}
+                    {% if team_pokemon.held_item %}
+                        {% if team_pokemon.held_items.name == item %}
+                        <option value="{{item}}" selected>{{item}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="ability">Ability:</label>
+            <select name="ability" id="ability">
+                {% for ability in allAbilities%}
+                    {% if team_pokemon %}
+                        {% if team_pokemon.ability == ability %}
+                        <option value="{{ability}}" selected>{{ability}}</option>
+                        {% endif %}
+                    {% else %}
+                    <option value="{{ability}}">{{ability}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <input type="submit" value="Save">
+    </form>
+</div>
+{% endblock %}
