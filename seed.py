@@ -7,6 +7,7 @@ from string import Template
 import requests
 
 from helper import createUser, queryPokemonByNameOrId, queryPokemonMoves, createMove, queryAbilityDesc, createTeamPokemon, createTeam, createUserTeams, createAllItems
+from helper import createAllPokemon, createAbility
 
 """Run this file first"""
 
@@ -21,63 +22,52 @@ try:
     createUser("misty", "password", "waterisbetterdummy@email.com")
     createUser("sabrina", "password", "ghostsaremyfriend@email.com")
     createUser("admin", "admin", "admin@adminemail.com")
+    createUser("anonymous","anonymous", "dummy@dummyemail.com")
 except:
     db.session.rollback()
 
 print("populate pokemon")
-geodude = queryPokemonByNameOrId("geodude")
-pikachu = queryPokemonByNameOrId("pikachu")
-blastoise = queryPokemonByNameOrId("blastoise")
-venusaur = queryPokemonByNameOrId("venusaur")
-charizard = queryPokemonByNameOrId("charizard")
-espeon = queryPokemonByNameOrId("espeon")
-snorlax = queryPokemonByNameOrId("snorlax")
-lapras = queryPokemonByNameOrId("lapras")
-
-try:
-    db.session.add_all([geodude, pikachu, blastoise, venusaur, charizard, espeon, snorlax, lapras])
-    db.session.commit()
-except:
-    db.session.rollback()
+createAllPokemon()
 
 brock_fav = Favorite(
     user_id = 2,
-    pokemon_id = 1
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "geodude").one_or_none().id
 )
 
 red_fav1 = Favorite(
     user_id = 1,
-    pokemon_id = 2
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "pikachu").one_or_none().id
+
 )
 
 red_fav2 = Favorite(
     user_id = 1,
-    pokemon_id = 3
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "blastoise").one_or_none().id
 )
 
 red_fav3 = Favorite(
     user_id = 1,
-    pokemon_id = 4
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "charizard").one_or_none().id
 )
 
 red_fav4 = Favorite(
     user_id = 1,
-    pokemon_id = 5
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "venusaur").one_or_none().id
 )
 
 red_fav5 = Favorite(
     user_id = 1,
-    pokemon_id = 6
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "snorlax").one_or_none().id
 )
 
 red_fav6 = Favorite(
     user_id = 1,
-    pokemon_id = 7
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "espeon").one_or_none().id
 )
 
 red_fav7 = Favorite(
     user_id = 1,
-    pokemon_id = 8,
+    pokemon_id = Pokemon.query.filter(Pokemon.name == "lapras").one_or_none().id,
     shiny = True
 )
 
