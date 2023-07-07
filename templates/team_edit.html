@@ -1,72 +1,5 @@
 {% extends 'base.html' %}
 
-{% block javascript %}
-<script type="text/javascript">
-    $(document).ready(function() {
-        let pokemon_list = [{{team.pokemon1.asDict() | tojson}},
-        {{team.pokemon2.asDict() | tojson}},
-        {{team.pokemon3.asDict() | tojson}},
-        {{team.pokemon4.asDict() | tojson}},
-        {{team.pokemon5.asDict() | tojson}},
-        {{team.pokemon6.asDict() | tojson}}];
-
-        $("img").on("click", async function (evt) {
-            $("#edit_pokemon").css("visibility", "hidden");
-            let team_pokemon_id = evt.target.title;
-            let pokemon_name = evt.target.id;
-
-            let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${evt.target.id}`);
-            $('#ability option').remove();
-            let abilities = response.data["abilities"].map(async function (value, index, array) {
-                let ability = value["ability"]["name"].replace('-', ' ');
-
-                let ability_request = await axios.get(`https://pokeapi.co/api/v2/ability/${value["ability"]["name"]}`);
-                let ability_desc = ability_request.data["effect_entries"].map(function(value, index, array){
-                   if (value["language"]["name"] == "en"){
-
-                       $('#ability').append($('<option>', {value: `${ability},${value["short_effect"]}`}).text(ability));
-                       return value["short_effect"];
-                   }
-                });
-                return ability;
-            });
-
-            $('#move_1 option').remove();
-            $('#move_2 option').remove();
-            $('#move_3 option').remove();
-            $('#move_4 option').remove();
-            let moves = response.data["moves"].map(function(value, index, array){
-                let move = value["move"]["name"].replace("-"," ");
-                $('#move_1').append($('<option>', { value : move }).text(move));
-                $('#move_2').append($('<option>', { value : move }).text(move));
-                $('#move_3').append($('<option>', { value : move }).text(move));
-                $('#move_4').append($('<option>', { value : move }).text(move));
-
-                return move;
-            });
-
-            //change all the option values to reflect the current pokemon's values
-            $('#pokemon').val(pokemon_name);
-            $("#team_pokemon_id").val(team_pokemon_id);
-            pokemon_list.map(function(pokemon, index, array){
-                if (pokemon.id == evt.target.title){
-                    $('#ability').val(pokemon.ability);
-
-                    /*
-                        ideally here we would also change the select options for the pokemon's
-                        moves and held_item, however since we cannot access our SQLalchemy ORM
-                        functionality in a javascript script, it is difficult to do so.
-                    */
-                }
-            });
-
-            //make the form visible after everything has been set
-            $("#edit_pokemon").css("visibility", "visible");
-
-        });
-    });
-{% endblock %}
-
 {% block content %}
 
 <h1> Click a Pokemon to start editing your team! </h1>
@@ -77,75 +10,30 @@
 <div>
     <table>
         <tr>
-            {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6] %}
-            <td>
-                <img id="{{entry.pokemon.name}}" title="{{entry.id}}" src="{{entry.pokemon.sprites}}">
-                <p>{{entry.move1.name}}</p>
-                <p>{{entry.move2.name}}</p>
-                <p>{{entry.move3.name}}</p>
-                <p>{{entry.move4.name}}</p>
-                <p>{{entry.ability}}</p>
-                <img src="{{entry.held_items.sprites}}">
-            </td>
+            {% for n in range(1,7) %}
+                {% if team_pokemon[n-1] %}
+                <td>
+                    {% if team_pokemon[n-1].pokemon %}
+                    <a href="/teams/edit/{{team.id}}/{{n}}"><img id="{{team_pokemon[n-1].pokemon.name}}" src="{{team_pokemon[n-1].pokemon.sprites}}"></a>
+                    {% else %}
+                    <a href="/teams/edit/{{team.id}}/{{n}}"><img src="/static/images/question_mark.png" style="width:96px;height:96px;"></a>
+                    {% endif %}
+                    <p>{{team_pokemon[n-1].move1.name}}</p>
+                    <p>{{team_pokemon[n-1].move2.name}}</p>
+                    <p>{{team_pokemon[n-1].move3.name}}</p>
+                    <p>{{team_pokemon[n-1].move4.name}}</p>
+                    <p>{{team_pokemon[n-1].ability}}</p>
+                    <img src="{{team_pokemon[n-1].held_items.sprites}}">
+                </td>
+                {% else %}
+                <td>
+                    <a href="/teams/edit/{{team.id}}/{{n}}"><img src="/static/images/question_mark.png" style="width:96px;height:96px;"></a>
+                </td>
+                {% endif %}
             {% endfor %}
         </tr>
     </table>
 </div>
 
-<div id="edit_pokemon" style="visibility:hidden">
-    <form action="/teams/save/{{team.id}}" method="post">
-        <div>
-            <label for="pokemon">Choose a Pokemon:</label>
-            <select name="pokemon" id="pokemon">
-                {% for pokemon in allPokemon%}
-                    <option value={{pokemon}}>{{pokemon}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="move_1">Move 1:</label>
-            <select name="move_1" id="move_1">
-            </select>
-        </div>
-        <div>
-            <label for="move_2">Move 2:</label>
-            <select name="move_2" id="move_2">
-            </select>
-        </div>
-        <div>
-            <label for="move_3">Move 3:</label>
-            <select name="move_3" id="move_3">
-            </select>
-        </div>
-        <div>
-            <label for="move_4">Move 4:</label>
-            <select name="move_4" id="move_4">
-            </select>
-        </div>
-        <div>
-            <label for="held_item">Held Item:</label>
-            <select name="held_item" id="held_item">
-                {% for item in allItems%}
-                <option value="{{item}}">{{item}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="ability">Ability:</label>
-            <select name="ability" id="ability">
 
-            </select>
-        </div>
-        <input type="submit" value="Save">
-        <div style="visibility:hidden">
-            <label for="team_pokemon_id"></label>
-            <select name="team_pokemon_id" id="team_pokemon_id">
-                {% for id in ids%}
-                <option value={{id}}>{{id}}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-    </form>
-</div>
 {% endblock %}
