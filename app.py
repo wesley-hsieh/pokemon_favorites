@@ -155,40 +155,50 @@ def edit_team_pokemon(team_id, team_slot):
     all_pokemon = [pokemon.asDict() for pokemon in Pokemon.query.all()]
     all_items = [item.name for item in Held_item.query.all()]
 
-    return render_template("team_edit.html", team = team, allPokemon = allPokemon, allItems= allItems, ids = teamPokemonIds)
+    if(team_pokemon.pokemon):
+#         print("pokemon exists: ", team_pokemon)
+#         print(team_pokemon.pokemon)
+        all_moves = Pokemon.query.filter(Pokemon.dex_number == team_pokemon.pokemon_id).one_or_none().moves.split(",")
+        all_abilities = Pokemon.query.filter(Pokemon.dex_number == team_pokemon.pokemon_id).one_or_none().abilities.split(",")
 
-# @app.route("/teams/save/<int:team_id>/<string:pokemon_name>/<string:move_1>/<string:move_2>/<string:move_3>/<string:move_4>/<string:held_item>", methods=["POST"])
-@app.route("/teams/save/<int:team_id>", methods=["POST"])
-def save_team_state(team_id):
+        return render_template("pokemon_edit.html", team = team, team_pokemon = team_pokemon, allPokemon = all_pokemon, allMoves = all_moves, allAbilities = all_abilities, allItems = all_items)
+    else:
+#         print("derp:", team_pokemon)
+#         print(team_pokemon.pokemon)
+        return render_template("pokemon_edit.html", team = team, team_pokemon = team_pokemon, allPokemon = all_pokemon, allItems = all_items)
+
+
+@app.route("/teams/save/<int:team_id>/<int:pokemon_id>", methods=["POST"])
+def save_team_state(team_id, pokemon_id):
     pokemon_name = request.form.get("pokemon")
     move_1 = request.form.get("move_1")
     move_2 = request.form.get("move_2")
     move_3 = request.form.get("move_3")
     move_4 = request.form.get("move_4")
     held_item = request.form.get("held_item")
-    ability = request.form.get("ability").split(',')
+    ability = request.form.get("ability")
 
     #id of the team pokemon to edit.
     team_pokemon_id = request.form.get("team_pokemon_id")
 
     print("pokemon name", pokemon_name)
-    print("move 1", move_1)
-    print("move2", move_2)
-    print("move3", move_3)
-    print("MOve4", move_4)
+    print("move 1", move_1, Move.query.filter(Move.name == move_1).one_or_none())
+    print("move 2", move_2)
+    print("move 3", move_3)
+    print("move 4", move_4)
     print("Held_item", held_item)
-    print("teampokemodn id", team_pokemon_id)
+    print("team pokemon id", pokemon_id)
     print(ability)
 
-    team_pokemon = Team_pokemon.query.get_or_404(team_pokemon_id)
+    team_pokemon = Team_pokemon.query.get_or_404(pokemon_id)
 
     team_pokemon.pokemon_id = Pokemon.query.filter(Pokemon.name == pokemon_name).one_or_none().id
     team_pokemon.move_1 = Move.query.filter(Move.name == move_1).one_or_none().id
     team_pokemon.move_2 = Move.query.filter(Move.name == move_2).one_or_none().id
     team_pokemon.move_3 = Move.query.filter(Move.name == move_3).one_or_none().id
     team_pokemon.move_4 = Move.query.filter(Move.name == move_4).one_or_none().id
-    team_pokemon.ability = ability[0]
-    team_pokemon.ability_desc = ability[1]
+    team_pokemon.ability = Ability.query.filter(Ability.name == ability).one_or_none().name
+    team_pokemon.ability_desc = Ability.query.filter(Ability.name == ability).one_or_none().desc
     team_pokemon.held_item = Held_item.query.filter(Held_item.name == held_item).one_or_none().id
 
     db.session.commit()
@@ -262,6 +272,57 @@ def display_pokemon_with_name(pokemon_name):
 
     return render_template("pokemon.html", pokemon = pokemon)
 
+@app.route("/teams/initialize", methods=["POST"])
+def initialize_team():
+    team_name = request.form["team_name"]
 
+    if(g.user):
+        pokemon1 = Team_pokemon()
+        pokemon2 = Team_pokemon()
+        pokemon3 = Team_pokemon()
+        pokemon4 = Team_pokemon()
+        pokemon5 = Team_pokemon()
+        pokemon6 = Team_pokemon()
+
+        db.session.add_all([pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6])
+        db.session.commit()
+
+        team = Team(
+            name = team_name,
+            user_id = g.user.id,
+            team_pokemon_1 = pokemon1.id,
+            team_pokemon_2 = pokemon2.id,
+            team_pokemon_3 = pokemon3.id,
+            team_pokemon_4 = pokemon4.id,
+            team_pokemon_5 = pokemon5.id,
+            team_pokemon_6 = pokemon6.id
+        )
+        db.session.add(team)
+        db.session.commit()
+
+#         team_obj = Team.query.filter(Team.name == team_name).one_or_none()
+
+        return redirect(f"/teams/create/{team.id}")
+
+    else:
+        anon_user = User.query.filter(User.username == "anonymous").one_or_none()
+        team = Team(
+            name = team_name,
+            user_id = anon_user.id
+        )
+        db.session.add(team)
+        db.session.commit()
+
+        team_obj = Team.query.filter(Team.name == team_name).one_or_none()
+
+        return redirect(f"/teams/create/{team_obj.id}")
+
+@app.route("/teams/create/<int:team_id>")
+def create_team(team_id):
+    """Route to create a new team """
+
+    team = Team.query.get_or_404(team_id)
+
+    return render_template("team_create.html", team = team)
 
 
