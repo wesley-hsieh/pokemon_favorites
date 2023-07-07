@@ -252,13 +252,13 @@ def user_profile(user_id):
 
     return render_template('profile.html', user=user)
 
-@app.route("/pokemon/<int:pokemon_id>")
-def display_pokemon_with_id(pokemon_id):
+@app.route("/pokemon")
+def display_pokemon_with_id():
     """Display the data for a Pokemon"""
 
-    print("pokemon_id", pokemon_id)
+    pokemon_query =request.args.get("q")
 
-    pokemon = Pokemon.query.get_or_404(pokemon_id)
+    pokemon = Pokemon.query.filter(Pokemon.name == pokemon_query).one_or_none()
 
     return render_template("pokemon.html", pokemon=pokemon)
 
