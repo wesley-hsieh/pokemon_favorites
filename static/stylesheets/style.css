@@ -60,3 +60,188 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.question_mark_logo{
+    height: 96px;
+    width: 96px;
+}
+
+.team-wrapper{
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.team-row-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.team-pokemon-wrapper{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    border-radius: 25px;
+    padding: 20px;
+    width: 400px;
+    height: 150px;
+    margin: 5px;
+}
+
+.flex-column{
+    display:flex;
+    flex-direction: column;
+    flex-grow:1
+}
+
+.pokemon-move-wrapper{
+    display:flex;
+    flex-direction: column;
+    flex-grow:1
+}
+
+.pokemon-image-wrapper{
+    display:flex;
+    flex-direction: column;
+    flex-grow:1
+}
+
+.pokemon-type-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.move-bubble{
+    background-color: white;
+    border-radius: 25px;
+    border: 1px white solid;
+    margin:1px;
+    width: 150px;
+    justify-content: center;
+    display: inline-flex;
+}
+
+.image-overlay {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.pokemon-overlay {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.held-item-overlay {
+    position: absolute;
+    top: 66px;
+    left: 66px;
+}
+
+.nav-style{
+    background-color: #2c7cec;
+    margin:10px;
+    border: 10px;
+}
+
+.body-style{
+    margin: 10px;
+    background-color: #c2d7fb;
+}
+
+.container-style{
+    margin:auto;
+}
+
+.search-bar{
+    display:flex;
+}
+
+.search-bar-wrapper{
+    padding:10px;
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+
+.pokemon-type-size{
+    width: 80px;
+    height: 16px;
+}
+
+.fire{
+    background-color: #ec7272;
+}
+
+.water{
+    background-color: #9abcf4;
+}
+
+.electric{
+    background-color: #fce29b;
+}
+
+.ground{
+    background-color: #b48b6d;
+}
+
+.grass{
+    background-color: #84c474;
+}
+
+.ghost {
+    background-color: #a283a2;
+}
+
+.bug {
+    background-color: #b6c067;
+}
+
+.rock{
+    background-color: #ccc4a7;
+}
+
+.steel{
+    background-color: #92bbcc;
+}
+
+.dragon{
+    background-color: #8b93eb;
+}
+
+.flying{
+    background-color: #acd4f4;
+}
+
+.ice{
+    background-color: #82e4fc;
+}
+
+.fighting{
+    background-color: #fca85b;
+}
+
+.psychic{
+    background-color: #f482a3;
+}
+
+.poison{
+    background-color: #ba81de;
+}
+
+.normal{
+    background-color: #bcbcbc;
+}
+
+.dark{
+    background-color: #8c8183;
+}
+
+.fairy{
+    background-color: #f4a4f4;
+}
+
+
+
