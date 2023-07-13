@@ -325,4 +325,48 @@ def create_team(team_id):
 
     return render_template("team_create.html", team = team)
 
+@app.route("/pokemon/favorite/<int:pokemon_id>", methods=["POST"])
+def add_remove_favorite_pokemon(pokemon_id):
+
+    curr_pokemon = Pokemon.query.filter(Pokemon.id == pokemon_id).one_or_none()
+
+    if curr_pokemon in g.user.favorites:
+        print("removing favorite")
+        favorite = Favorite.query.filter(Favorite.user_id == g.user.id).filter(Favorite.pokemon_id == curr_pokemon.id).one_or_none()
+        db.session.delete(favorite)
+        db.session.commit()
+    else:
+        print("adding favorite")
+        new_favorite = Favorite(
+            user_id = g.user.id,
+            pokemon_id = pokemon_id,
+            shiny = False
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+
+    return render_template("pokemon.html", pokemon = curr_pokemon)
+
+@app.route("/pokemon/favorite/<int:pokemon_id>/shiny", methods=["POST"])
+def add_remove_favorite_pokemon_shiny(pokemon_id):
+
+    curr_pokemon = Pokemon.query.filter(Pokemon.id == pokemon_id).one_or_none()
+
+    if curr_pokemon in g.user.favorites:
+        print("removing favorite")
+        favorite = Favorite.query.filter(Favorite.user_id == g.user.id).filter(Favorite.pokemon_id == curr_pokemon.id).one_or_none()
+        db.session.delete(favorite)
+        db.session.commit()
+    else:
+        print("adding favorite")
+        new_favorite = Favorite(
+            user_id = g.user.id,
+            pokemon_id = pokemon_id,
+            shiny = True
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+
+    return render_template("pokemon.html", pokemon = curr_pokemon)
+
 
