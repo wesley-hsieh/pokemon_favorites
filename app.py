@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, send_file
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import copy
@@ -368,5 +368,85 @@ def add_remove_favorite_pokemon_shiny(pokemon_id):
         db.session.commit()
 
     return render_template("pokemon.html", pokemon = curr_pokemon)
+
+
+# routes to return pokemon types directly to frontend
+@app.route("/static/images/types/dark.png")
+def return_dark_pic():
+    return send_file("./static/images/types/Dark.png", attachment_filename='dark.png')
+
+@app.route("/static/images/types/bug.png")
+def return_bug_pic():
+    return send_file("./static/images/types/Bug.png", attachment_filename='bug.png')
+
+@app.route("/static/images/types/dragon.png")
+def return_dragon_pic():
+    return send_file("./static/images/types/Dragon.png", attachment_filename='dragon.png')
+
+@app.route("/static/images/types/electric.png")
+def return_electric_pic():
+    return send_file("./static/images/types/Electric.png", attachment_filename='electric.png')
+
+@app.route("/static/images/types/fairy.png")
+def return_fairy_pic():
+    return send_file("./static/images/types/Fairy.png", attachment_filename='fairy.png')
+
+@app.route("/static/images/types/fighting.png")
+def return_fighting_pic():
+    return send_file("./static/images/types/Fighting.png", attachment_filename='fighting.png')
+
+@app.route("/static/images/types/fire.png")
+def return_fire_pic():
+    return send_file("./static/images/types/Fire.png", attachment_filename='fire.png')
+
+@app.route("/static/images/types/flying.png")
+def return_flying_pic():
+    return send_file("./static/images/types/Flying.png", attachment_filename='flying.png')
+
+@app.route("/static/images/types/ghost.png")
+def return_ghost_pic():
+    return send_file("./static/images/types/Ghost.png", attachment_filename='ghost.png')
+
+@app.route("/static/images/types/grass.png")
+def return_grass_pic():
+    return send_file("./static/images/types/Grass.png", attachment_filename='grass.png')
+
+@app.route("/static/images/types/ground.png")
+def return_ground_pic():
+    return send_file("./static/images/types/Ground.png", attachment_filename='ground.png')
+
+@app.route("/static/images/types/ice.png")
+def return_ice_pic():
+    return send_file("./static/images/types/Ice.png", attachment_filename='ice.png')
+
+@app.route("/static/images/types/normal.png")
+def return_normal_pic():
+    return send_file("./static/images/types/Normal.png", attachment_filename='normal.png')
+
+@app.route("/static/images/types/poison.png")
+def return_poison_pic():
+    return send_file("./static/images/types/Poison.png", attachment_filename='poison.png')
+
+@app.route("/static/images/types/psychic.png")
+def return_psychic_pic():
+    return send_file("./static/images/types/Psychic.png", attachment_filename='psychic.png')
+
+@app.route("/static/images/types/rock.png")
+def return_rock_pic():
+    return send_file("./static/images/types/Rock.png", attachment_filename='rock.png')
+
+@app.route("/static/images/types/steel.png")
+def return_steel_pic():
+    return send_file("./static/images/types/Steel.png", attachment_filename='steel.png')
+
+@app.route("/static/images/types/water.png")
+def return_water_pic():
+    return send_file("./static/images/types/Water.png", attachment_filename='water.png')
+
+
+
+
+
+
 
 
