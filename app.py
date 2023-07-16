@@ -325,6 +325,24 @@ def create_team(team_id):
 
     return render_template("team_create.html", team = team)
 
+@app.route("/teams/delete/<int:team_id>", methods=["POST"])
+def delete_team(team_id):
+    '''Route for deleting a team'''
+
+    team = Team.query.get_or_404(team_id)
+    if (team.user_id == g.user.id):
+        try:
+            db.session.delete(team)
+            db.session.commit()
+            flash("Team deleted successfully")
+            return redirect("/")
+        except:
+            flash("Something went wrong")
+            return redirect(f"/teams/{team_id}")
+    else:
+        flash("Invalid user")
+        return redirect(f"/teams/{team_id}")
+
 @app.route("/pokemon/favorite/<int:pokemon_id>", methods=["POST"])
 def add_remove_favorite_pokemon(pokemon_id):
 
