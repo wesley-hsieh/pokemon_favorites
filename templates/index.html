@@ -9,7 +9,7 @@
             </div>
             <div>
                 <table>
-                    <tr class="team-row-wrapper">
+                    <tr class="flex-row">
                         {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3] %}
                             {% if entry.pokemon %}
                                 <td class="team-pokemon-wrapper {{entry.pokemon.type_1}}" id="{{entry.pokemon.name}}">
@@ -20,15 +20,15 @@
                                         </div>
                                     </span>
                                     <span class="flex-column">
-                                        <span class="move-bubble">{{entry.move1.name}}</span>
-                                        <span class="move-bubble">{{entry.move2.name}}</span>
-                                        <span class="move-bubble">{{entry.move3.name}}</span>
-                                        <span class="move-bubble">{{entry.move4.name}}</span>
+                                        <span class="bubble">{{entry.move1.name}}</span>
+                                        <span class="bubble">{{entry.move2.name}}</span>
+                                        <span class="bubble">{{entry.move3.name}}</span>
+                                        <span class="bubble">{{entry.move4.name}}</span>
                                     </span>
                                     <span class="flex-column">
-                                        <img id="{{entry.pokemon.name}}_type_1" src="static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
+                                        <img id="{{entry.pokemon.name}}_type_1" src="/static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
                                         {% if entry.pokemon.type_2 %}
-                                        <img id="{{entry.pokemon.name}}_type_2" src="static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
+                                        <img id="{{entry.pokemon.name}}_type_2" src="/static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
                                         {% endif %}
                                     </span>
                                 </td>
@@ -36,7 +36,7 @@
                                 <td class="team-pokemon-wrapper">
                                     <span class="flex-column">
                                         <div class="image-overlay">
-                                            <img src="/static/images/question_mark.png" style="width:96px;height:96px;">
+                                            <img src="/static/images/question_mark.png" class="question_mark_logo">
                                         </div>
                                     </span>
                                 </td>
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <table>
-                    <tr class="team-row-wrapper">
+                    <tr class="flex-row">
                         {% for entry in [team.pokemon4, team.pokemon5, team.pokemon6] %}
                             {% if entry.pokemon %}
                             <td class="team-pokemon-wrapper {{entry.pokemon.type_1}}" id="{{entry.pokemon.name}}">
@@ -58,15 +58,15 @@
                                     </div>
                                 </span>
                                 <span class="flex-column">
-                                    <span class="move-bubble">{{entry.move1.name}}</span>
-                                    <span class="move-bubble">{{entry.move2.name}}</span>
-                                    <span class="move-bubble">{{entry.move3.name}}</span>
-                                    <span class="move-bubble">{{entry.move4.name}}</span>
+                                    <span class="bubble">{{entry.move1.name}}</span>
+                                    <span class="bubble">{{entry.move2.name}}</span>
+                                    <span class="bubble">{{entry.move3.name}}</span>
+                                    <span class="bubble">{{entry.move4.name}}</span>
                                 </span>
                                 <span class="flex-column">
-                                    <img id="{{entry.pokemon.name}}_type_1" src="static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
+                                    <img id="{{entry.pokemon.name}}_type_1" src="/static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
                                     {% if entry.pokemon.type_2 %}
-                                    <img id="{{entry.pokemon.name}}_type_2" src="static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
+                                    <img id="{{entry.pokemon.name}}_type_2" src="/static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
                                     {% endif %}
                                 </span>
                             </td>
@@ -74,7 +74,7 @@
                             <td class="team-pokemon-wrapper">
                                 <span class="flex-column">
                                     <div class="image-overlay">
-                                        <img src="/static/images/question_mark.png" style="width:96px;height:96px;">
+                                        <img src="/static/images/question_mark.png" class="question_mark_logo">
                                     </div>
                                 </span>
                             </td>

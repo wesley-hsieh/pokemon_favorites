@@ -1,50 +1,98 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
-<h1> Team here</h1>
+<div class="team-wrapper">
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <p>{{team.name}}</p>
+        </div>
+        {% if g.user.id == team.user_id %}
+        <div style="display: flex;">
+            <a href='/teams/edit/{{team.id}}'><button class="button">Edit</button></a>
 
-<p> Have an 'if' clause here letting the author/creator of team edit the team</p>
-
-{% if g.user %}
-    {% if g.user.id == team.user_id %}
-        <p> hi {{g.user.name}}</p>
-        <a href='/teams/edit/{{team.id}}'><button>Edit</button></a>
-    {% endif %}
-{% endif %}
-
-<p>{{team.name}}</p>
-
-<table>
-    <tr>
-        {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6] %}
-            {% if entry %}
-            <td>
-                <div>
+            <form action="/teams/delete/{{team.id}}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button class="button" type="submit"/>Delete</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <div>
+        <table>
+            <tr class="flex-row">
+                {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3] %}
                     {% if entry.pokemon %}
-                    <a href="/pokemon/{{entry.pokemon.name}}"><img src="{{entry.pokemon.sprites}}"></a>
+                    <td class="team-pokemon-wrapper {{entry.pokemon.type_1}}" id="{{entry.pokemon.name}}">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <a href="/pokemon/{{entry.pokemon.name}}"><img class="pokemon-overlay" src="{{entry.pokemon.sprites}}"></a>
+                                <img class="held-item-overlay" src="{{entry.held_items.sprites}}">
+                            </div>
+                        </span>
+                        <span class="flex-column">
+                            <span class="bubble">{{entry.move1.name}}</span>
+                            <span class="bubble">{{entry.move2.name}}</span>
+                            <span class="bubble">{{entry.move3.name}}</span>
+                            <span class="bubble">{{entry.move4.name}}</span>
+                        </span>
+                        <span class="flex-column">
+                            <img id="{{entry.pokemon.name}}_type_1" src="/static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
+                            {% if entry.pokemon.type_2 %}
+                            <img id="{{entry.pokemon.name}}_type_2" src="/static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
+                            {% endif %}
+                        </span>
+                    </td>
                     {% else %}
-                    <img src="/static/images/question_mark.png" style="width:96px;height:96px;">
+                    <td class="team-pokemon-wrapper">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <img src="/static/images/question_mark.png" class="question_mark_logo">
+                            </div>
+                        </span>
+                    </td>
                     {% endif %}
-                    <p>{{entry.move1.name}}</p>
-                    <p>{{entry.move2.name}}</p>
-                    <p>{{entry.move3.name}}</p>
-                    <p>{{entry.move4.name}}</p>
-
-                    <img src="{{entry.held_items.sprites}}">
-                </div>
-            </td>
-            {% else %}
-            <td>
-                <div>
-                    <img src="/static/images/question_mark.png" style="width:96px;height:96px;">
-                </div>
-            </td>
-            {% endif %}
-        {% endfor %}
-    </tr>
-</table>
-
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr class="flex-row">
+                {% for entry in [team.pokemon4, team.pokemon5, team.pokemon6] %}
+                    {% if entry.pokemon %}
+                    <td class="team-pokemon-wrapper {{entry.pokemon.type_1}}" id="{{entry.pokemon.name}}">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <a href="/pokemon/{{entry.pokemon.name}}"><img class="pokemon-overlay" src="{{entry.pokemon.sprites}}"></a>
+                                <img class="held-item-overlay" src="{{entry.held_items.sprites}}">
+                            </div>
+                        </span>
+                        <span class="flex-column">
+                            <span class="bubble">{{entry.move1.name}}</span>
+                            <span class="bubble">{{entry.move2.name}}</span>
+                            <span class="bubble">{{entry.move3.name}}</span>
+                            <span class="bubble">{{entry.move4.name}}</span>
+                        </span>
+                        <span class="flex-column">
+                            <img id="{{entry.pokemon.name}}_type_1" src="/static/images/types/{{entry.pokemon.type_1}}.png" class="pokemon-type-size">
+                            {% if entry.pokemon.type_2 %}
+                            <img id="{{entry.pokemon.name}}_type_2" src="/static/images/types/{{entry.pokemon.type_2}}.png" class="pokemon-type-size">
+                            {% endif %}
+                        </span>
+                    </td>
+                    {% else %}
+                    <td class="team-pokemon-wrapper">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <img src="/static/images/question_mark.png" class="question_mark_logo">
+                            </div>
+                        </span>
+                    </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
