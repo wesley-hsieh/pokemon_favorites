@@ -9,21 +9,6 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
-#   use pytest for testing
-#   tests give confidence to change code
-#   where to choose to "poke" at
-#   change test everytime you change something, that's bad
-#   strike balance between high level/low level
-#
-
-#   example: trying test web application, podcast server (host internally at apple)
-#   top level tests -> basic functionality, if podcast in database, request by id, does it give me the right xml
-#   podcast files are stored in amazons3, what happens if amazon says too many requests
-#   test environment
-#   test pyramid, integration test.
-#   test if code we have to properly handle errors in unit tests
-#   mocks? create own code to mimic s3 and give back error that would've been returned by real s3
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
@@ -94,8 +79,6 @@ class Favorite(db.Model):
 
 class Team(db.Model):
     __tablename__ = "teams"
-
-    #Pokemon do not need to be unique (add docstring)
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False)

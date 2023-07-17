@@ -81,8 +81,6 @@ except:
 print("populate held items")
 createAllItems()
 
-#create example user teams
-
 #create team_pokemon and commit
 print("populate team")
 red_pikachu = createTeamPokemon("pikachu", "charm", "quick attack", "thunderbolt", "thunder", "static", "light ball")

@@ -24,10 +24,10 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
-# db.create_all()
 
 @app.route('/')
 def homepage():
+    '''Route for homepage '''
 
     users = User.query.all()
     teams = Team.query.all()
@@ -122,13 +122,6 @@ def logout():
     flash("You have successfully logged out.", 'success')
     return redirect("/login")
 
-@app.route('/teams')
-def display_teams():
-
-    teams = Team.query.all()
-
-    return render_template("/teams.html", teams = teams)
-
 @app.route('/teams/<int:team_id>', methods=["GET", "POST"])
 def display_team(team_id):
     '''Route to display a team'''
@@ -147,6 +140,7 @@ def edit_team(team_id):
 
 @app.route('/teams/edit/<int:team_id>/<int:team_slot>', methods=["GET"])
 def edit_team_pokemon(team_id, team_slot):
+    '''Route to edit a pokemon or an entry on a team'''
     team = Team.query.get_or_404(team_id)
 
     pokemon = [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6]
@@ -156,20 +150,17 @@ def edit_team_pokemon(team_id, team_slot):
     all_items = [item.name for item in Held_item.query.all()]
 
     if(team_pokemon.pokemon):
-#         print("pokemon exists: ", team_pokemon)
-#         print(team_pokemon.pokemon)
         all_moves = Pokemon.query.filter(Pokemon.dex_number == team_pokemon.pokemon_id).one_or_none().moves.split(",")
         all_abilities = Pokemon.query.filter(Pokemon.dex_number == team_pokemon.pokemon_id).one_or_none().abilities.split(",")
 
         return render_template("pokemon_edit.html", team = team, team_pokemon = team_pokemon, allPokemon = all_pokemon, allMoves = all_moves, allAbilities = all_abilities, allItems = all_items)
     else:
-#         print("derp:", team_pokemon)
-#         print(team_pokemon.pokemon)
         return render_template("pokemon_edit.html", team = team, team_pokemon = team_pokemon, allPokemon = all_pokemon, allItems = all_items)
 
 
 @app.route("/teams/save/<int:team_id>/<int:pokemon_id>", methods=["POST"])
 def save_team_state(team_id, pokemon_id):
+    '''Route to actually "push" or save the changes made to the Postgresql database'''
     pokemon_name = request.form.get("pokemon")
     move_1 = request.form.get("move_1")
     move_2 = request.form.get("move_2")
@@ -180,15 +171,6 @@ def save_team_state(team_id, pokemon_id):
 
     #id of the team pokemon to edit.
     team_pokemon_id = request.form.get("team_pokemon_id")
-
-    print("pokemon name", pokemon_name)
-    print("move 1", move_1, Move.query.filter(Move.name == move_1).one_or_none())
-    print("move 2", move_2)
-    print("move 3", move_3)
-    print("move 4", move_4)
-    print("Held_item", held_item)
-    print("team pokemon id", pokemon_id)
-    print(ability)
 
     team_pokemon = Team_pokemon.query.get_or_404(pokemon_id)
 
@@ -217,15 +199,6 @@ def add_new_pokemon_to_team(team_id, pokemon_id):
 
     #id of the team pokemon to edit.
     team_pokemon_id = request.form.get("team_pokemon_id")
-
-    print("pokemon name", pokemon_name)
-    print("move 1", move_1, Move.query.filter(Move.name == move_1).one_or_none())
-    print("move 2", move_2)
-    print("move 3", move_3)
-    print("move 4", move_4)
-    print("Held_item", held_item)
-    print("team pokemon id", pokemon_id)
-    print(ability)
 
     team_pokemon = Team_pokemon(
         pokemon_id = Pokemon.query.filter(Pokemon.name == pokemon_name).one_or_none().id,
@@ -274,6 +247,7 @@ def display_pokemon_with_name(pokemon_name):
 
 @app.route("/teams/initialize", methods=["POST"])
 def initialize_team():
+    '''Initialize a team object in the sql database with empty data for ease of querying later'''
     team_name = request.form["team_name"]
 
     if(g.user):
@@ -299,8 +273,6 @@ def initialize_team():
         )
         db.session.add(team)
         db.session.commit()
-
-#         team_obj = Team.query.filter(Team.name == team_name).one_or_none()
 
         return redirect(f"/teams/create/{team.id}")
 
@@ -345,6 +317,7 @@ def delete_team(team_id):
 
 @app.route("/pokemon/favorite/<int:pokemon_id>", methods=["POST"])
 def add_remove_favorite_pokemon(pokemon_id):
+    '''Route to add a favorite to a user's profile'''
 
     curr_pokemon = Pokemon.query.filter(Pokemon.id == pokemon_id).one_or_none()
 
@@ -367,6 +340,7 @@ def add_remove_favorite_pokemon(pokemon_id):
 
 @app.route("/pokemon/favorite/<int:pokemon_id>/shiny", methods=["POST"])
 def add_remove_favorite_pokemon_shiny(pokemon_id):
+    '''Route to add a favorite to a user's profile that is specifically going to have the shiny image'''
 
     curr_pokemon = Pokemon.query.filter(Pokemon.id == pokemon_id).one_or_none()
 

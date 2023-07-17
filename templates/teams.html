@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
 <h1> Teams here</h1>
@@ -11,8 +10,12 @@
 
 {% for team in teams %}
 
-
 <a href="/teams/{{team.id}}"><p>{{team.name}}</p></a>
+
+{% if g.user.id == team.user_id %}
+<button id="delete_team">Delete Team</button>
+{% endif %}
+
 <table>
     <tr>
         {% for entry in [team.pokemon1, team.pokemon2, team.pokemon3, team.pokemon4, team.pokemon5, team.pokemon6] %}

@@ -1,62 +1,43 @@
-# Project Title
-
-Simple overview of use/purpose.
+# Yet Another Pokémon Teambuilder
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+A rendition and personal take on the classic Pokémon Teambuilder built and based on a combination of Flask, Jinja, 
+PostgreSQL, HTML, CSS, and Javascript. 
 
 ## Getting Started
 
+TBD
+
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* This was primarily drafted and ran on an Ubuntu Linux virtual machine, specifically Ubuntu 20.04 LTS.
+* Find the full list of dependencies in requirements.txt, however some notable ones are:
+```
+bcrypt==3.1.4
+Flask==1.0.2
+Flask-Bcrypt==0.7.1
+Flask-DebugToolbar==0.10.1
+Flask-SQLAlchemy==2.3.2
+Flask-WTF==0.14.2
+Jinja2==2.10
+```
 
 ### Installing
-
+TBD
 * How/where to download your program
 * Any modifications needed to be made to files/folders
 
 ### Executing program
-
+TBD
 * How to run the program
 * Step-by-step bullets
 ```
 code blocks for commands
 ```
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
-## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Websites that I took inspiration from
+* https://play.pokemonshowdown.com/teambuilder
+* https://mypokemonteam.com/

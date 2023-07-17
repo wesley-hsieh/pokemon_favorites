@@ -9,8 +9,6 @@ import logging
 from psycopg2.errors import UndefinedFunction
 from sqlalchemy.exc import ProgrammingError
 
-# DROP TABLE abilities, favorites, held_items, moves, pokemon, team_pokemon, teams, user_teams, users CASCADE;
-
 from string import Template
 
 getPokemonURL = "https://pokeapi.co/api/v2/pokemon/"
@@ -94,7 +92,6 @@ def queryPokemonMoves(pokemon_name_id):
     for move in data["moves"]:
         moves.append(move["move"]["name"])
 
-#     print(moves)
     return moves
 
 def queryAbilityDesc(ability_name):
@@ -136,12 +133,10 @@ def createMove(move_name):
 
 def createTeamPokemon(name, move_1, move_2, move_3, move_4, ability, held_item):
     pok = Pokemon.query.filter(Pokemon.name == name).first()
-#     print(pok.id)
 
     held_item_id = None
     try:
         held_item_id = Held_item.query.filter(Held_item.name == held_item).first().id
-#         print(held_item_id)
     except:
         pass
 
@@ -284,26 +279,3 @@ def createAbility(ability_name):
             print("some error occured on ", x)
             logging.exception("an exception was thrown")
 
-#     ability_count = data["count"]
-#
-#     print("ability_count", ability_count)
-#
-#     for x in range(1, ability_count+1):
-#         try:
-#             request = requests.get(getAbilityURL+str(x))
-#             data = request.json()
-#             name = data["name"].replace('-',' ')
-#             print(name)
-#
-#             for entry in data["effect_entries"]:
-#                 if entry["language"]["name"] == "en":
-# #                     print(entry["short_effect"])
-#                     newAbility = Ability(
-#                         name = data["name"].replace('-',' '),
-#                         desc = entry["short_effect"]
-#                     )
-#                     db.session.add(newAbility)
-#                     db.session.commit()
-#         except BaseException:
-#             print("some error occured on ", x)
-#             logging.exception("an exception was thrown")
