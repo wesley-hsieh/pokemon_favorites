@@ -14,7 +14,7 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-print(os.environ['DATABASE_URL'])
+print("os.environ" os.environ['DATABASE_URL'])
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
