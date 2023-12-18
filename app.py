@@ -360,7 +360,7 @@ def add_remove_favorite_pokemon_shiny(pokemon_id):
 
     return render_template("pokemon.html", pokemon = curr_pokemon)
 
-# @app.route('/static/<string:path>')
-# def send_type(path):
-#
-#     return send_from_directory("static", path)
+@app.route('/static/<string:path>')
+def send_type(path):
+
+    return send_from_directory("static", path)
