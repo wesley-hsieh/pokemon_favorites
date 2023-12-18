@@ -39,7 +39,7 @@ psycopg2-binary==2.8.4
 
 ### Installing
 
-* The basic requirements to running this is having an ubuntu installation, a postgresql database, and python installed on your machine,
+* The basic requirements to running this is having an ubuntu installation, a postgresql database, python installed on your machine,
 preferably python3 and above with ipython installed as well. The specific version that heroku is running this with is python-3.9.18.
 
 * Install a postgresql server and initialize the empty database. I used `sudo apt install postgresql` followed by `sudo service postgresl start` to check if 
