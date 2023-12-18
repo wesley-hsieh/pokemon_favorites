@@ -68,9 +68,18 @@ input:checked + .slider:before {
 
 .team-wrapper{
     background-color: white;
-    padding: 10px;
+    padding: 5px;
     border-radius: 15px;
-    margin: 10px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.team-wrapper table{
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .flex-row{
@@ -82,11 +91,10 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: row;
     background-color: whitesmoke;
-    border-radius: 25px;
-    padding: 20px;
-    width: 400px;
-    height: 150px;
-    margin: 5px;
+    width:350px;
+    border-radius: 10px;
+    padding:8px;
+    margin: 3px;
 }
 
 .flex-column{
