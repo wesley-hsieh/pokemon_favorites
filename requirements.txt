@@ -93,4 +93,3 @@ Werkzeug==0.14.1
 wheel==0.34.2
 WTForms==2.2.1
 zipp==1.0.0
-zope.interface==4.7.1
