@@ -7,7 +7,7 @@ WTForms==2.2.1
 bcrypt==3.1.4
 cffi==1.14.2
 chardet==3.0.4
-click==7.0
+click==8.0
 cryptography==2.8
 gunicorn==20.0.4
 idna==2.8
