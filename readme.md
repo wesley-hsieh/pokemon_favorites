@@ -42,7 +42,7 @@ psycopg2-binary==2.8.4
 * The basic requirements to running this is having an ubuntu installation, a postgresql database, python installed on your machine,
 preferably python3 and above with ipython installed as well. The specific version that heroku is running this with is python-3.9.18.
 
-* Install a postgresql server and initialize the empty database. I used `sudo apt install postgresql` followed by `sudo service postgresl start` to check if 
+* Install a postgresql server and initialize the empty database. I used `sudo apt install postgresql` followed by `sudo service postgresql start` to check if 
 the database is running. Once the psql server is confirmed to be online, enter the psql shell via `psql` and simply create the database
 via `CREATE DATABASE pokemon_favorites;`. The flask sqlalchemy ORM will take care of all the tables and relations.
 
