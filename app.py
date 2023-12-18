@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 # print("os.environ", os.environ['DATABASE_URL'])"""  """
 uri = os.getenv("DATABASE_URL")
-if uri is not None and uri.startswith("postgres://"):
+if uri != None and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
