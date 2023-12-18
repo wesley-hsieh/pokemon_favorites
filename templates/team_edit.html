@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--<div>-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            {% for n in range(1,7) %}-->
+<!--                {% if team_pokemon[n-1] %}-->
+<!--                <td>-->
+<!--                    {% if team_pokemon[n-1].pokemon %}-->
+<!--                    <a href="/teams/edit/{{team.id}}/{{n}}"><img id="{{team_pokemon[n-1].pokemon.name}}" src="{{team_pokemon[n-1].pokemon.sprites}}"></a>-->
+<!--                    {% else %}-->
+<!--                    <a href="/teams/edit/{{team.id}}/{{n}}"><img src="/static/images/question_mark.png" style="width:96px;height:96px;"></a>-->
+<!--                    {% endif %}-->
+<!--                    <p>{{team_pokemon[n-1].move1.name}}</p>-->
+<!--                    <p>{{team_pokemon[n-1].move2.name}}</p>-->
+<!--                    <p>{{team_pokemon[n-1].move3.name}}</p>-->
+<!--                    <p>{{team_pokemon[n-1].move4.name}}</p>-->
+<!--                    <p>{{team_pokemon[n-1].ability}}</p>-->
+<!--                    <img src="{{team_pokemon[n-1].held_items.sprites}}">-->
+<!--                </td>-->
+<!--                {% else %}-->
+<!--                <td>-->
+<!--                    <a href="/teams/edit/{{team.id}}/{{n}}"><img src="/static/images/question_mark.png" style="width:96px;height:96px;"></a>-->
+<!--                </td>-->
+<!--                {% endif %}-->
+<!--            {% endfor %}-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+
+<div class="team-wrapper">
+    <div>
+        <h1> Click a Pokemon to start editing your team! </h1>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <p>{{team.name}}</p>
+        </div>
+        <div style="display: flex;">
+            <a href="/teams/{{team.id}}"><button class="button">Back</button></a>
+        </div>
+    </div>
+    <div>
+        <table>
+            <tr class="flex-row">
+                {% for n in range(1,4) %}
+                    {% if team_pokemon[n-1].pokemon %}
+                    <td class="team-pokemon-wrapper {{team_pokemon[n-1].pokemon.type_1}}" id="{{team_pokemon[n-1].pokemon.name}}">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <a href="/teams/edit/{{team.id}}/{{n}}"><img class="pokemon-overlay" src="{{team_pokemon[n-1].pokemon.sprites}}"></a>
+                                <img class="held-item-overlay" src="{{team_pokemon[n-1].held_items.sprites}}">
+                            </div>
+                        </span>
+                        <span class="flex-column">
+                            <span class="bubble">{{team_pokemon[n-1].move1.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move2.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move3.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move4.name}}</span>
+                        </span>
+                        <span class="flex-column">
+                            <img id="{{team_pokemon[n-1].pokemon.name}}_type_1" src="/static/images/types/{{team_pokemon[n-1].pokemon.type_1}}.png" class="pokemon-type-size">
+                            {% if team_pokemon[n-1].pokemon.type_2 %}
+                            <img id="{{team_pokemon[n-1].pokemon.name}}_type_2" src="/static/images/types/{{team_pokemon[n-1].pokemon.type_2}}.png" class="pokemon-type-size">
+                            {% endif %}
+                        </span>
+                    </td>
+                    {% else %}
+                    <td class="team-pokemon-wrapper">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <img src="/static/images/question_mark.png" class="question_mark_logo">
+                            </div>
+                        </span>
+                    </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr class="flex-row">
+                {% for n in range(4,7) %}
+                    {% if team_pokemon[n-1].pokemon %}
+                    <td class="team-pokemon-wrapper {{team_pokemon[n-1].pokemon.type_1}}" id="{{team_pokemon[n-1].pokemon.name}}">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <a href="/teams/edit/{{team.id}}/{{n}}"><img class="pokemon-overlay" src="{{team_pokemon[n-1].pokemon.sprites}}"></a>
+                                <img class="held-item-overlay" src="{{team_pokemon[n-1].held_items.sprites}}">
+                            </div>
+                        </span>
+                        <span class="flex-column">
+                            <span class="bubble">{{team_pokemon[n-1].move1.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move2.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move3.name}}</span>
+                            <span class="bubble">{{team_pokemon[n-1].move4.name}}</span>
+                        </span>
+                        <span class="flex-column">
+                            <img id="{{team_pokemon[n-1].pokemon.name}}_type_1" src="/static/images/types/{{team_pokemon[n-1].pokemon.type_1}}.png" class="pokemon-type-size">
+                            {% if team_pokemon[n-1].pokemon.type_2 %}
+                            <img id="{{team_pokemon[n-1].pokemon.name}}_type_2" src="/static/images/types/{{team_pokemon[n-1].pokemon.type_2}}.png" class="pokemon-type-size">
+                            {% endif %}
+                        </span>
+                    </td>
+                    {% else %}
+                    <td class="team-pokemon-wrapper">
+                        <span class="flex-column">
+                            <div class="image-overlay">
+                                <img src="/static/images/question_mark.png" class="question_mark_logo">
+                            </div>
+                        </span>
+                    </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

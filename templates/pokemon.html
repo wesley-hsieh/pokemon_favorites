@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+<script type="text/javascript">
+    let pokemon_js = {{ pokemon.asDict()|tojson|safe }};
+
+    // waits for the DOM to load
+    $(document).ready(function() {
+        pokemon_image = document.getElementById("pokemon-image");
+
+        $(':checkbox').on("change", function(){
+            if(this.checked){
+                console.log("input checked");
+                pokemon_image.src = pokemon_js.shiny_sprites;
+
+                $("#pokemon-form").attr("action", `/pokemon/favorite/${pokemon_js.id}/shiny`);
+            }else{
+                console.log("unchecked");
+                pokemon_image.src = pokemon_js.sprites;
+                $("#pokemon-form").attr("action", `/pokemon/favorite/${pokemon_js.id}`);
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="team-wrapper {{pokemon.type_1}}">
+    <div>
+        {{pokemon.name}}
+    </div>
+    <div>
+        <div class="flex-row">
+            <div class="flex-column">
+                <div class="image-overlay">
+                    <a href="/pokemon/{{pokemon.name}}"><img style="height:192px; width:192px" id="pokemon-image" src="{{pokemon.sprites}}"></a>
+                </div>
+                <div class="flex-row ">
+                    <label id="shiny-switch" class="switch button">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    {% if g.user %}
+                        {% if pokemon in g.user.favorites %}
+                        <form id="pokemon-form" class="button" action="/pokemon/favorite/{{pokemon.id}}" method="post">
+                            <button>Remove Favorite</button>
+                        </form>
+                        {% else %}
+                        <form id="pokemon-form" class="button" action="/pokemon/favorite/{{pokemon.id}}" method="post">
+                            <button>Favorite</button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex-column">
+                <div>
+                    <div class="bubble">Health:</div>
+                    <div class="bubble">{{pokemon.health_stat}}</div>
+                </div>
+                <div>
+                    <div class="bubble">Attack:</div>
+                    <div class="bubble">{{pokemon.attack_stat}}</div>
+                </div>
+                <div>
+                    <div class="bubble">Defence:</div>
+                    <div class="bubble">{{pokemon.defence_stat}}</div>
+                </div>
+                <div>
+                    <div class="bubble">Special Attack:</div>
+                    <div class="bubble">{{pokemon.special_atk_stat}}</div>
+                </div>
+                <div>
+                    <div class="bubble">Special Defence:</div>
+                    <div class="bubble">{{pokemon.special_def_stat}}</div>
+                </div>
+                <div>
+                    <div class="bubble">Speed:</div>
+                    <div class="bubble">{{pokemon.speed_stat}}</div>
+                </div>
+            </div>
+            <div class="flex-column">
+                <img id="{{pokemon.name}}_type_1" src="/static/images/types/{{pokemon.type_1}}.png" style="width: 200px; height:40px">
+                {% if pokemon.type_2 %}
+                <img id="{{pokemon.name}}_type_2" src="/static/images/types/{{pokemon.type_2}}.png" style="width: 200px; height:40px">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Yet Another Pokémon Teambuilder</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/popper"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="/static/stylesheets/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+
+    {% block javascript %}
+    {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %} body-style">
+<nav class="navbar navbar-expand nav-style">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/350.png" alt="logo">
+                <span>Plan your Pokémon Teams!</span>
+            </a>
+        </div>
+        <div class="search-bar-wrapper">
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.endpoint != None %}
+                <li>
+                    <form class="navbar-form navbar-right search-bar" action="/pokemon">
+                        <input name="q" class="form-control" placeholder="Search" id="search">
+                        <button class="btn btn-default">
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </form>
+                </li>
+                {% endif %}
+                {% if not g.user %}
+                <li style="margin: 5px"><a href="/signup">Sign up</a></li>
+                <li style="margin: 5px"><a href="/login">Log in</a></li>
+                {% else %}
+                <li style="margin: 5px">
+                    <a href="/user/{{ g.user.id }}">Profile</a>
+                </li>
+                <li style="margin: 5px"><a href="/logout">Log out</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container container-style">
+    <div class="container-style">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash_messages">
+                    {% for message in messages %}
+                        <span>{{ message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>
