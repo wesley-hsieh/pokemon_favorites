@@ -14,16 +14,16 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-# print("os.environ", os.environ['DATABASE_URL'])"""  """
-uri = os.getenv("DATABASE_URL")
-if uri != None and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# print("os.environ", os.environ['DATABASE_URL'])
+# uri = os.getenv("DATABASE_URL")
+# if uri != None and uri.startswith("postgres://"):
+#     uri = uri.replace("postgres://", "postgresql://", 1)
+#     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = (
-#     os.environ.get('DATABASE_URL', 'postgresql:///pokemon-favorites'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///pokemon-favorites'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -237,6 +237,10 @@ def display_pokemon_with_id():
     pokemon_query = request.args.get("q")
 
     pokemon = Pokemon.query.filter(Pokemon.name == pokemon_query).one_or_none()
+
+    if pokemon is None:  # If the query doesn't return a valid Pokemon
+        flash(f"I'm sorry, I could not find a pokemon with name: {pokemon_query}", 'danger')
+        return redirect(request.referrer or url_for('index_route'))  # Replace 'index_route' with your default route
 
     return render_template("pokemon.html", pokemon=pokemon)
 
