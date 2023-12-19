@@ -2,12 +2,23 @@
 
 ## Description
 
-A rendition and personal take on the classic Pokémon Teambuilder built and based on a combination of Flask, Jinja, 
-PostgreSQL, HTML, CSS, and Javascript. 
+A rendition and personal project on the classic Pokémon Teambuilder built and based on a combination of Flask, Jinja, 
+PostgreSQL, HTML, CSS, and Javascript. A place for people to generally draft which Pokémon they want to bring, their movesets, abilities, and items as
+well as view other people's teams and what they chose to bring in their journey!
 
 ## Getting Started
 
 If you wish to simply view the project in action, head over to [yetanotherpokemonteambuilder](https://yetanotherpokemonteambuilder-32a0fcc5ffd6.herokuapp.com/)
+
+### General user flow
+
+Go ahead and register with the site, email is required but no emails will be sent to you so do not worry about that. 
+Navigate to your profile and you will see an area that you can create a new team based on whichever name you submit. Once you have decided on the name of your team and submit, 
+you'll be redirected to your team creation page. Click on the question mark images to edit that specific slot, in which you will have the option(s) to choose which Pokémon, 
+and the rest of the drop downs will be populated afterwards. Make sure to click save and you'll be further redirected back to your team creation page. 
+
+Furthermore, you can look up Pokémon and their base stats, types, and stats in the search bar in the top right by your profile link. Simply input a Pokémon's name you wish to look up.
+In the specific Pokémon's page, you'll see a little button by which you can toggle whether or not you wish to see shiny sprite. 
 
 ### Dependencies
 
@@ -58,7 +69,6 @@ your python installation, reference the [docs](https://pip.pypa.io/en/stable/ins
 
 * With your dependencies installed, you should be able to simply execute the flask app via `flask run` 
 * Navigate to your localhost at port 5000 or `localhost:5000` or `127.0.0.1:5000` and have fun! 
-
 
 ## Acknowledgments
 
