@@ -76,5 +76,5 @@ Websites that I took inspiration from
 * https://play.pokemonshowdown.com/teambuilder
 * https://mypokemonteam.com/
 
-API that I sourced my data from 
+## API that I sourced my data from 
 * https://pokeapi.co/ 
