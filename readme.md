@@ -69,7 +69,6 @@ your python installation, reference the [docs](https://pip.pypa.io/en/stable/ins
 
 * With your dependencies installed, you should be able to simply execute the flask app via `flask run` 
 * Navigate to your localhost at port 5000 or `localhost:5000` or `127.0.0.1:5000` and have fun!
-* 
 
 ### Testing/Tests
 
