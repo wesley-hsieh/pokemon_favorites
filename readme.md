@@ -18,7 +18,7 @@ you'll be redirected to your team creation page. Click on the question mark imag
 and the rest of the drop downs will be populated afterwards. Make sure to click save and you'll be further redirected back to your team creation page. 
 
 Furthermore, you can look up Pokémon and their base stats, types, and stats in the search bar in the top right by your profile link. Simply input a Pokémon's name you wish to look up.
-In the specific Pokémon's page, you'll see a little button by which you can toggle whether or not you wish to see shiny sprite. 
+In the specific Pokémon's page, you'll see a little button by which you can toggle whether or not you wish to see that respective Pokémon's shiny sprite. 
 
 ### Dependencies
 
