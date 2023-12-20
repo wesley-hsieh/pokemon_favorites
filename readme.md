@@ -68,7 +68,12 @@ your python installation, reference the [docs](https://pip.pypa.io/en/stable/ins
 ### Executing program
 
 * With your dependencies installed, you should be able to simply execute the flask app via `flask run` 
-* Navigate to your localhost at port 5000 or `localhost:5000` or `127.0.0.1:5000` and have fun! 
+* Navigate to your localhost at port 5000 or `localhost:5000` or `127.0.0.1:5000` and have fun!
+* 
+
+### Testing/Tests
+
+* Test are located in the /tests folder, simply run `python -m unittest discover -s tests` to execute them (this command finds all test files in the directory test)
 
 ## Acknowledgments
 
